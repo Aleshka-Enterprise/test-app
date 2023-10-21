@@ -28,6 +28,10 @@ class Test(models.Model):
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
 
+    @property
+    def questions(self):
+        return self.question_set.all()
+
 
 class Answer(models.Model):
     answer_text = models.CharField(max_length=128, verbose_name='Ответ', unique=True)
