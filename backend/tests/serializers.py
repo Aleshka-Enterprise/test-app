@@ -46,10 +46,8 @@ class TestDetailSerializer(serializers.ModelSerializer):
 
             if not correct_answer_text:
                 raise ValidationError('Поле answer не заполнено!'.format(correct_answer_text))
-
             if len(question['answers']) != 4:
                 raise ValidationError('Должно быть ровно 4 варианта ответа!'.format(correct_answer_text))
-
             if not any([correct_answer_text == i['answer_text'] for i in question['answers']]):
                 raise ValidationError(
                     'Правильный ответ должен быть среди вариантов ответов!'.format(correct_answer_text))
