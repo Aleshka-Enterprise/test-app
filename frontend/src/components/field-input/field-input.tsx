@@ -13,6 +13,9 @@ interface StoreInputProps {
   readonly?: boolean;
 }
 
+/**
+ * Кастомное поле ввода для форм
+ */
 const FieldInput = ({ formik, fieldName, label, placeholder, type = "text", readonly = false }: StoreInputProps): React.ReactElement => {
   const formikProps = getFieldProps(formik, fieldName);
   const value = formik.values[fieldName];

@@ -6,6 +6,7 @@ import { REQUIRED_FIELD_ERROR } from "../../utils/utils";
 import * as yup from "yup";
 import UsersService from "../../services/users/users.service";
 import TasksParticles from "../../components/particles/particles";
+import { Box, Button, Typography } from "@mui/material";
 
 
 const userSchema = yup.object({
@@ -13,6 +14,9 @@ const userSchema = yup.object({
   password: yup.string().required(REQUIRED_FIELD_ERROR),
 });
 
+/**
+ * Авторизация
+ */
 const Autorization = (): React.ReactElement => {
   const navigate = useNavigate();
 
@@ -25,7 +29,7 @@ const Autorization = (): React.ReactElement => {
       UsersService.autorization(values)
       .then((): void => {
         navigate("/");
-        // UsersService.getCurrentUser();
+        UsersService.getCurrentUser();
       })
       .catch(() => {
         console.log({ title: "Ошибка", description: "Не верный логин или пароль!" });
@@ -36,39 +40,58 @@ const Autorization = (): React.ReactElement => {
   });
 
   return (
-    <div style={{ display: "flex", alignItems: "center", height: "100%", justifyContent: "center" }}>
+    <Box sx={{ display: "flex", alignItems: "center", height: "100%", justifyContent: "center" }}>
       <TasksParticles />
-      <div style={{ width: "400px", height: "70%", backgroundColor: "white", borderRadius: "10px", padding: "20px 50px", marginTop: "13%" }}>
+      <Box sx={{ width: "400px", height: "70%", backgroundColor: "white", borderRadius: "10px", padding: "20px 50px", marginTop: "15%" }}>
+      <Box
+        sx={{
+          fontSize: "38px",
+          fontWeight: 600,
+          display: "flex",
+          alignItems: "center",
+          color: "#212529",
+          margin: "0 66% 20px auto",
+          width: "50px",
+        }}
+        >
+          Авторизация
+        </Box>
         <FieldInput
           formik={formik}
           fieldName={"username"}
           label={"Имя пользователя"}
           placeholder={"Введите имя пользователя"}
         />
-        <FieldInput
-          formik={formik}
-          fieldName={"password"}
-          label={"Пароль"}
-          placeholder={"Введите пароль"}
-        />
-        <button
+        <Box sx={{ width: "100%", marginTop: "15px" }}>
+          <FieldInput
+            formik={formik}
+            fieldName={"password"}
+            label={"Пароль"}
+            placeholder={"Введите пароль"}
+          />
+        </Box>
+        <Button
           onClick={() => formik.submitForm()}
-          style={{
+          sx={{
             cursor: "pointer",
             color: "#ffffff",
             backgroundColor: "#32373d",
             alignItems: "center",
             transition: "0.3s",
-            height: "30px",
-            marginTop: "20px",
+            height: "40px",
+            marginTop: "30px",
             borderRadius: "3px",
             float: "right",
+            border: "solid 1px #32373d",
+            "&:hover": {
+              background: "#00040a",
+            }
           }}
         >
           Авторизоваться
-        </button>
-      </div>
-    </div> 
+        </Button>
+      </Box>
+    </Box> 
   );
 };
 

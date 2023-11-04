@@ -2,6 +2,13 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from .models import Test, Category, Question, Answer, UserAnswer
+from user.models import User
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -33,6 +40,7 @@ class UserAnswerSerializer(serializers.ModelSerializer):
 
 class TestDetailSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True)
+    category = CategorySerializer()
 
     class Meta:
         model = Test
@@ -84,6 +92,10 @@ class TestDetailSerializer(serializers.ModelSerializer):
 
 
 class TestListSerializer(serializers.ModelSerializer):
+    """Упрощённый сериалайзер со списком тестов"""
+    category = CategorySerializer()
+    author = AuthorSerializer()
+
     class Meta:
         model = Test
         fields = ['id', 'title', 'category', 'author', 'img', 'description']

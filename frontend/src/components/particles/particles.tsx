@@ -3,6 +3,9 @@ import { Engine } from "tsparticles-engine";
 import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 
+/**
+ * Экран с частицами
+ */
 const TasksParticles = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
