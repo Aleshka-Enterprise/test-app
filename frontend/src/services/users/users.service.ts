@@ -1,7 +1,7 @@
 import { CommonService } from "../common.service";
 import axios from "axios";
 import { IToken, IUser } from "../../models/users/users";
-import { PartialBy, converCase } from "../../utils/utils";
+import { PartialBy, converCase, logout } from "../../utils/utils";
 import UsersStore from "../../store/users";
 
 type IUserRegisteration = PartialBy<IUser, 'id'>
@@ -35,7 +35,10 @@ class UsersService extends CommonService {
         UsersStore.user = data;
         return response.data;
       },
-      reason => Promise.reject(reason)
+      reason => {
+        logout();
+        return Promise.reject(reason);
+      },
     );
   };
 
@@ -74,7 +77,7 @@ class UsersService extends CommonService {
         return converCase(response.data, "camel") as IUser;
       },
       reason => Promise.reject(reason)
-    )
+    );
   }
 }
 

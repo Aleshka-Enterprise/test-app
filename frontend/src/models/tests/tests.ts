@@ -10,7 +10,7 @@ export interface ITestCategory {
 
 export interface IAnswer {
   id: number;
-  answerText: string;
+  answer_text: string;
 }
 
 export interface IQuestion {
@@ -27,4 +27,12 @@ export interface ITest {
   author: IAuthor;
   category: ITestCategory;
   questions?: IQuestion[];
+}
+
+export interface IUserAnswer {
+  user: number;
+  test: number;
+  selectedAnswer: number;
+  question: number;
+  id: number;
 }

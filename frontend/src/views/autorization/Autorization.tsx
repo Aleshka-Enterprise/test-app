@@ -6,7 +6,7 @@ import { REQUIRED_FIELD_ERROR } from "../../utils/utils";
 import * as yup from "yup";
 import UsersService from "../../services/users/users.service";
 import TasksParticles from "../../components/particles/particles";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 
 const userSchema = yup.object({

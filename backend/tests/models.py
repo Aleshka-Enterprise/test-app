@@ -20,6 +20,9 @@ class Test(models.Model):
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, verbose_name='Категория')
     author = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, verbose_name='Автор')
     img = models.ImageField(upload_to='test_img', verbose_name='Изображение', blank=True)
+    date_of_creation = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания', blank=True)
+    date_of_published = models.DateTimeField(verbose_name='Дата публикации', null=True)
+    is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
 
     def __str__(self):
         return self.title
