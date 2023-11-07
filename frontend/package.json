@@ -15,6 +15,8 @@
     "@types/react-dom": "^18.2.14",
     "axios": "^1.6.0",
     "formik": "^2.4.5",
+    "lodash": "^4.17.21",
+    "material-ui-popup-state": "^5.0.10",
     "mobx": "^6.10.2",
     "mobx-react": "^9.0.1",
     "react": "^18.2.0",
@@ -51,5 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.200"
   }
 }

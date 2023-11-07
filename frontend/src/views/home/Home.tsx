@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import TestsService from "../../services/tests/tests.service";
-import { ITest } from "../../models/tests/tests";
-import { Box, Grid, Typography, Input, MenuList } from "@mui/material";
+import { ITest, ITestCategory } from "../../models/tests/tests";
+import { Box, Grid, Typography, Input } from "@mui/material";
 import Paginator from "../../components/paginator/paginator";
 import { useNavigate } from "react-router-dom";
+import DropDown from "../../components/drop-down/DropDown";
+import  { debounce } from "lodash";
 
 interface HomeProps {
   setSelectedTest: (test: ITest) => void;
@@ -19,28 +21,43 @@ const Home = ({ setSelectedTest }: HomeProps): React.ReactElement => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageCount, setPageCount] = useState<number>(0);
   const [search, setSearch] = useState<string>();
+  const [categoryList, setCategoryList] = useState<ITestCategory[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<ITestCategory>();
   const navigate = useNavigate();
 
   useEffect(() => {
-    TestsService.getTestsList(currentPage, search).then(res => {
+    TestsService.getCategoriesList().then(res => {
+      setCategoryList([{ id: 0, title: "Все" }, ...res]);
+    });
+  }, []);
+
+  useEffect(() => {
+    TestsService.getTestsList(currentPage, search, selectedCategory?.id).then(res => {
       setPageCount(Math.ceil((res?.count || 0) / PAGE_RANGE))
       setTestsList(res.results);
-    })
-  }, [currentPage, search]);
+    });
+  }, [currentPage, search, selectedCategory]);
+
+  const debounceSearch = debounce(setSearch, 500);
 
   return (
     <Box sx={{ background: "#F1F4F7", height: "100vh", padding: "0 360px" }}>
       <Typography sx={{ fontWeight: 600, fontSize: "30px", color: "#5E5C74", paddingTop: "50px" }}>Тесты онлайн</Typography>
-      <Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Input
-          // TODO Добавить debounce
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setSearch(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => debounceSearch(e.target.value)}
           placeholder='Поиск по тестам...'
           sx={{
             width: "600px",
             mb: "10px",
             mt: "20px",
           }}
+        />
+        <DropDown
+          options={categoryList}
+          name={selectedCategory?.title ?? "Категория"}
+          onOptionSelect={setSelectedCategory}
+          selectedOptionId={selectedCategory?.id}
         />
       </Box>
       <Grid container columnSpacing={4}>

@@ -21,9 +21,12 @@ class TestViewSet(viewsets.ModelViewSet):
         if self.action != 'list':
             return super(TestViewSet, self).get_queryset()
         else:
-            return (Test.objects.select_related('author', 'category')
-                    .filter(title__contains=self.request.query_params.get('search', ''), is_published=True)
-                    .order_by('date_of_creation'))
+            queryset = (Test.objects.select_related('author', 'category')
+                        .filter(title__contains=self.request.query_params.get('search', ''), is_published=True)
+                        .order_by('date_of_creation'))
+            if self.request.query_params.get('category_id'):
+                queryset = queryset.filter(category_id=self.request.query_params.get('category_id'))
+            return queryset
 
     def get_serializer_class(self):
         # Если не получаем id, то выдаём упрощенный объект
