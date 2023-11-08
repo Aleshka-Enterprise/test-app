@@ -8,6 +8,7 @@ import { ITest } from "./models/tests/tests";
 import { observer } from "mobx-react";
 import UsersStore from "./store/users";
 import Test from "./views/test/Test";
+import TestResult from "./views/test-result/TestResult";
 
 const App = observer((): React.ReactElement => {
   const [selectedTest, setSelectedTest] = useState<ITest>();
@@ -29,6 +30,7 @@ const App = observer((): React.ReactElement => {
         <Route path="autorization" element={<Autorization />} />
         {selectedTest && <Route path="preview" element={<TestPreview selectedTest={selectedTest} />} />}
         {selectedTest && UsersStore.user && <Route path="test" element={<Test selectedTest={selectedTest} />} />}
+        {selectedTest && UsersStore.user && <Route path="result" element={<TestResult selectedTest={selectedTest} />} />}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
   </BrowserRouter>

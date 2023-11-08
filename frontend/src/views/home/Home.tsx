@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import TestsService from "../../services/tests/tests.service";
 import { ITest, ITestCategory } from "../../models/tests/tests";
 import { Box, Grid, Typography, Input } from "@mui/material";

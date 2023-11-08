@@ -16,7 +16,7 @@ export interface IAnswer {
 export interface IQuestion {
   id: number;
   question: string;
-  answers: IAnswer[];
+  answer_options: IAnswer[];
 }
 
 export interface ITest {
@@ -35,4 +35,11 @@ export interface IUserAnswer {
   selectedAnswer: number;
   question: number;
   id: number;
+}
+
+export interface ITestResult {
+  rightAnswer: number;
+  id: number;
+  question: IQuestion;
+  selectedAnswer: number;
 }

@@ -5,6 +5,7 @@ import TestsService from "../../services/tests/tests.service";
 import { observer } from "mobx-react";
 import UserStore from "../../store/users";
 import { buttonMixin } from "../../utils/styles";
+import { useNavigate } from "react-router-dom";
 
 interface TestProps {
 selectedTest: ITest,
@@ -17,6 +18,7 @@ const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [index, setIndex] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Omit<IUserAnswer, "id">[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     TestsService.getTest(selectedTest.id).then(test => {
@@ -45,11 +47,11 @@ const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
   };
 
   const endTest = (): void => {
-
+    navigate("/result/");
   };
 
   const submitAnswer = (): void => {
-    TestsService.submitAnswer(selectedAnswers[index]).then(res => {
+    TestsService.submitAnswer(selectedAnswers[index]).then((): void => {
       index + 1 < questions.length ? setIndex(index + 1) : endTest();
     });
   };
@@ -63,7 +65,7 @@ const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: "50px" }}>
         <Box sx={{ fontSize: "48px", fontWeight: 500, color: "white" }}>{index + 1}. {questions[index]?.question}</Box>
         <Box>
-          {questions[index]?.answers?.map(el => {
+          {questions[index]?.answer_options?.map(el => {
             return (
               <Box
                 key={el.id}

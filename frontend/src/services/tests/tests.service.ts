@@ -1,6 +1,6 @@
 import { CommonService } from "../common.service";
 import axios from "axios";
-import { ITest, ITestCategory, IUserAnswer } from "../../models/tests/tests";
+import { ITest, ITestCategory, ITestResult, IUserAnswer } from "../../models/tests/tests";
 import { IPage } from "../../models/common";
 import { converCase } from "../../utils/utils";
 
@@ -54,9 +54,19 @@ class TestsService extends CommonService {
   /**
    * Список всех категорий
    */
-  getCategoriesList() {
+  getCategoriesList(): Promise<ITestCategory[]> {
     return axios.get<ITestCategory[]>(`${this.url}/category/`).then(
       response => converCase(response.data, "camel") as ITestCategory[],
+      reason => Promise.reject(reason)
+    );
+  };
+
+  /**
+   * Возвращает результаты по тесту
+   */
+  getTestResult(testId: number): Promise<ITestResult[]> {
+    return axios.get<ITestResult[]>(`${this.url}/result/${testId}/`).then(
+      response => converCase(response.data, "camel") as ITestResult[],
       reason => Promise.reject(reason)
     );
   };

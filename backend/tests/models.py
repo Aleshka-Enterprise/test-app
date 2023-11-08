@@ -51,8 +51,8 @@ class Question(models.Model):
     test = models.ForeignKey(to=Test, on_delete=models.CASCADE, verbose_name='Тест')
     img = models.ImageField(upload_to='question_img', verbose_name='Изображение', blank=True)
     question = models.TextField(verbose_name='Вопрос')
-    answers = models.ManyToManyField(to=Answer, related_name='questions')
-    correct_answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE, verbose_name='Правильный ответ')
+    answer_options = models.ManyToManyField(to=Answer, related_name='questions')
+    right_answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE, verbose_name='Правильный ответ')
 
     class Meta:
         verbose_name = 'Вопрос'

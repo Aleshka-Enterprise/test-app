@@ -1,9 +1,12 @@
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Test, Category, UserAnswer
-from .serializers import TestDetailSerializer, TestListSerializer, CategorySerializer, UserAnswerSerializer
+from .serializers import TestDetailSerializer, TestListSerializer, CategorySerializer, UserAnswerSerializer, \
+    TestResultSerializer
 
 
 class TestViewSetPagination(PageNumberPagination):
@@ -47,6 +50,7 @@ class CategoriesViewSet(viewsets.ModelViewSet):
 
 
 class UserAnswerViewSet(viewsets.ModelViewSet):
+    """ViewSet для работы с ответами пользователя"""
     serializer_class = UserAnswerSerializer
     permission_classes = [IsAuthenticated]
     queryset = UserAnswer.objects.all()
@@ -55,4 +59,18 @@ class UserAnswerViewSet(viewsets.ModelViewSet):
         if self.request.query_params.get('test_id'):
             return UserAnswer.objects.filter(user=self.request.user, test_id=self.request.query_params.get('test_id'))
         return UserAnswer.objects.filter(user=self.request.user)
+
+
+class TestResultAPIView(APIView):
+    """Результат тестирования"""
+    serializer_class = TestResultSerializer
+
+    def get(self, request, *args, **kwargs):
+        data = UserAnswer.objects.filter(user=self.request.user, test_id=kwargs.get('test_id'))
+
+        serializer = self.serializer_class(data, many=True)
+        serialized_data = serializer.data
+
+        return Response(serialized_data)
+
 
