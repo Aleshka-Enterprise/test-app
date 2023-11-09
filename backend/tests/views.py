@@ -64,6 +64,7 @@ class UserAnswerViewSet(viewsets.ModelViewSet):
 class TestResultAPIView(APIView):
     """Результат тестирования"""
     serializer_class = TestResultSerializer
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         data = UserAnswer.objects.filter(user=self.request.user, test_id=kwargs.get('test_id'))
@@ -73,4 +74,7 @@ class TestResultAPIView(APIView):
 
         return Response(serialized_data)
 
-
+    def delete(self, request, *args, **kwargs):
+        """Удаление результатов тестирования"""
+        UserAnswer.objects.filter(user_id=self.request.user.id, test_id=kwargs['test_id']).delete()
+        return Response({'message': 'Ресурс успешно удален'})

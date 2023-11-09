@@ -30,28 +30,29 @@ const elementMixin: SxProps = {
 
 const Paginator = ({ onPageSelect, selectedPage, pageCount }: PaginatorProps): React.ReactElement => {
   const pageList = useMemo(() => {
-    let allPages: number[] = [];
+    const allPages: number[] = [];
     for (let i = 1; i <= pageCount; i++) {
       allPages.push(i);
-    };
+    }
     const res = allPages.filter(el => el > 0 && el <= pageCount);
     const currentPageIndex = res.findIndex(el => el === selectedPage);
     let startIndex = Math.max(0, currentPageIndex - 2);
 
     if (startIndex + 5 > pageCount) {
-      startIndex += pageCount - (startIndex + 5)
-    };
+      startIndex += pageCount - (startIndex + 5);
+    }
 
     return res.slice(Math.max(startIndex, 0), Math.min(pageCount, startIndex + 5));
   }, [selectedPage, pageCount]);
 
   return (
-    <Box sx={{
+    <Box
+      sx={{
         width: "max-content",
         height: "40px",
         display: "flex",
         justifyContent: "center",
-        border: "1px solid rgba(0,0,0,.125)", 
+        border: "1px solid rgba(0,0,0,.125)",
         borderRight: "none",
         borderRadius: "4px",
         cursor: "pointer",
@@ -91,9 +92,9 @@ const Paginator = ({ onPageSelect, selectedPage, pageCount }: PaginatorProps): R
             onPageSelect(selectedPage + 1);
           }
         }}
-        >
-          Следующая
-        </Box>
+      >
+        Следующая
+      </Box>
     </Box>
   );
 };

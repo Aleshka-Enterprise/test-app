@@ -5,7 +5,7 @@ export interface IAuthor {
 
 export interface ITestCategory {
   id: number;
-  title: string
+  title: string;
 }
 
 export interface IAnswer {

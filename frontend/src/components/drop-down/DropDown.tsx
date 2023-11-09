@@ -9,48 +9,48 @@ interface DropDownProps {
   name: string;
   onOptionSelect: (valye?: { title: string; id: number }) => void;
   selectedOptionId?: number;
-};
+}
 
 const DropDown = ({ options, name, onOptionSelect, selectedOptionId }: DropDownProps): React.ReactElement => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (): void => {
     setAnchorEl(null);
   };
 
   return (
     <Box>
       <Button
-        id="demo-positioned-button"
-        aria-controls={open ? 'demo-positioned-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        id='demo-positioned-button'
+        aria-controls={open ? "demo-positioned-menu" : undefined}
+        aria-haspopup='true'
+        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
         {name}
       </Button>
       <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
+        id='demo-positioned-menu'
+        aria-labelledby='demo-positioned-button'
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
       >
         {options.map(option => {
           return (
             <MenuItem
-              onClick={() => {
+              onClick={(): void => {
                 onOptionSelect(option.id !== 0 ? option : undefined);
                 handleClose();
               }}
@@ -64,6 +64,6 @@ const DropDown = ({ options, name, onOptionSelect, selectedOptionId }: DropDownP
       </Menu>
     </Box>
   );
-}
+};
 
 export default DropDown;

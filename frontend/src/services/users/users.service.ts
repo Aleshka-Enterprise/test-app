@@ -4,7 +4,7 @@ import { IToken, IUser } from "../../models/users/users";
 import { PartialBy, converCase, logout } from "../../utils/utils";
 import UsersStore from "../../store/users";
 
-type IUserRegisteration = PartialBy<IUser, 'id'>
+type IUserRegisteration = PartialBy<IUser, "id">;
 
 class UsersService extends CommonService {
   protected url = `${this.baseURL}/api/user`;
@@ -23,7 +23,7 @@ class UsersService extends CommonService {
       },
       reason => Promise.reject(reason)
     );
-  };
+  }
 
   /**
    * Получить текущего пользователя
@@ -38,9 +38,9 @@ class UsersService extends CommonService {
       reason => {
         logout();
         return Promise.reject(reason);
-      },
+      }
     );
-  };
+  }
 
   /**
    * выходит из пользователя и удаляет токен из localStorage
@@ -49,23 +49,23 @@ class UsersService extends CommonService {
     return axios.get<void>(`${this.url}/logout/`).then(
       () => {
         localStorage.removeItem("token");
-        delete axios.defaults.headers.common["Authorization"];
+        delete axios.defaults.headers?.common["Authorization"];
       },
       reason => Promise.reject(reason)
     );
-  };
+  }
 
   /**
    * Регистрация пользователя
    */
   registration(data: IUserRegisteration): Promise<IUserRegisteration> {
     return axios.post<IUserRegisteration>(`${this.url}/registration/`, converCase(data, "snake")).then(
-      (response) => {
+      response => {
         return converCase(response.data, "camel") as IUser;
       },
       reason => Promise.reject(reason)
-    )
-  };
+    );
+  }
 
   /**
    * Получить поьзователя по id
@@ -73,7 +73,7 @@ class UsersService extends CommonService {
    */
   getUser(id: number): Promise<IUser> {
     return axios.get<IUser>(`${this.url}/${id}/`).then(
-      (response) => {
+      response => {
         return converCase(response.data, "camel") as IUser;
       },
       reason => Promise.reject(reason)

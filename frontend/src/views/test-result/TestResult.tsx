@@ -4,9 +4,11 @@ import { Box, Typography, Button } from "@mui/material";
 import TestsService from "../../services/tests/tests.service";
 import { observer } from "mobx-react";
 import { buttonMixin } from "../../utils/styles";
+import TestsStore from "../../store/tests";
+import { useNavigate } from "react-router-dom";
 
 interface TestResultProps {
-selectedTest: ITest,
+  selectedTest: ITest;
 }
 
 /**
@@ -14,6 +16,7 @@ selectedTest: ITest,
  */
 const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElement => {
   const [result, setResult] = useState<ITestResult[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     TestsService.getTestResult(selectedTest.id).then(test => {
@@ -22,7 +25,6 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
   }, [selectedTest]);
 
   const answers = result.map((res, index) => {
-
     const getAnswerText = (id: number): string | undefined => {
       return res.question.answer_options.find(el => el.id === id)?.answer_text;
     };
@@ -38,15 +40,17 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
   const numberOfCorrectAnswers: number = useMemo(() => {
     return result.reduce((acc, dec): number => {
       if (dec.selectedAnswer === dec.rightAnswer) {
-        return acc += 1;
-      };
+        return (acc += 1);
+      }
       return acc;
     }, 0);
   }, [result]);
 
   return (
     <Box>
-      <Box sx={{ height: "150px", background: "#5e5e73", padding: "50px 450px", position: "relative", display: "flex" }}>
+      <Box
+        sx={{ height: "150px", background: "#5e5e73", padding: "50px 450px", position: "relative", display: "flex" }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -54,18 +58,50 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
             width: "100%",
             color: "white",
             fontSize: "18px",
-          }
-        }>
+          }}
+        >
           <Box>
-            <Typography sx={{ textAlign: "center" }}>Тесты | {selectedTest.category.title}</Typography>
+            <Typography
+              sx={{
+                textAlign: "center",
+                cursor: "pointer",
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+              onClick={(): void => {
+                TestsStore.currentPage = 0;
+                TestsStore.search = "";
+                TestsStore.selectedTestCategory = selectedTest.category;
+                navigate("/home/");
+              }}
+            >
+              Тесты | {selectedTest.category.title}
+            </Typography>
             <Typography sx={{ fontSize: "36px", verticalAlign: "center" }}>{selectedTest.title}</Typography>
-            <Button sx={{ ...buttonMixin, margin: "30px auto", float: "none", display: "flex" }}>Пройти тест ещё раз</Button>
+            <Button
+              sx={{
+                ...buttonMixin,
+                margin: "30px auto",
+                float: "none",
+                display: "flex",
+              }}
+              onClick={(): void => {
+                TestsService.deleteTestResult(selectedTest.id).then(() => {
+                  navigate("/preview/");
+                });
+              }}
+            >
+              Пройти тест ещё раз
+            </Button>
           </Box>
         </Box>
       </Box>
-      <Box sx={{ padding: "30px 450px", fontSize: "18px", }}>
-        <Typography>Правильных ответов: {numberOfCorrectAnswers} из {result.length}</Typography>
-        <Typography>Процент правильных ответов: {numberOfCorrectAnswers / result.length * 100}%</Typography>
+      <Box sx={{ padding: "30px 450px", fontSize: "18px" }}>
+        <Typography>
+          Правильных ответов: {numberOfCorrectAnswers} из {result.length}
+        </Typography>
+        <Typography>Процент правильных ответов: {(numberOfCorrectAnswers / result.length) * 100}%</Typography>
         <Box sx={{ marginTop: "20px" }}>
           {answers.map(answer => {
             return (
@@ -77,12 +113,12 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
                   padding: "10px",
                 }}
               >
-                <Typography>{answer.step}. {answer.question}</Typography>
+                <Typography>
+                  {answer.step}. {answer.question}
+                </Typography>
                 <Box sx={{ marginLeft: "20px" }}>
                   <Typography>{answer.rightAnswer}</Typography>
-                  <Typography
-                    sx={{ color: answer.rightAnswer === answer.selectedAnswer ? "#00ff00" : "red" }}
-                  >
+                  <Typography sx={{ color: answer.rightAnswer === answer.selectedAnswer ? "#00ff00" : "red" }}>
                     {answer.selectedAnswer}
                   </Typography>
                 </Box>

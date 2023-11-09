@@ -4,7 +4,7 @@ import { ITest } from "../../models/tests/tests";
 import { useNavigate } from "react-router-dom";
 
 interface TestPreviewProps {
-  selectedTest: ITest,
+  selectedTest: ITest;
 }
 
 /**
@@ -19,7 +19,14 @@ const TestPreview = ({ selectedTest }: TestPreviewProps): React.ReactElement => 
         <img
           src={selectedTest.img}
           alt={selectedTest.title}
-          style={{ width: "200px", height: "200px", objectFit: "cover", borderRadius: "50%", margin: "0 auto", display: "flex" }}
+          style={{
+            width: "200px",
+            height: "200px",
+            objectFit: "cover",
+            borderRadius: "50%",
+            margin: "0 auto",
+            display: "flex",
+          }}
         />
         <Typography
           sx={{
@@ -33,9 +40,9 @@ const TestPreview = ({ selectedTest }: TestPreviewProps): React.ReactElement => 
         >
           {selectedTest.title}
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "center" }}>          
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Button
-            onClick={() => {
+            onClick={(): void => {
               navigate("/test/");
             }}
             sx={{
@@ -52,7 +59,7 @@ const TestPreview = ({ selectedTest }: TestPreviewProps): React.ReactElement => 
               border: "solid 1px #32373d",
               "&:hover": {
                 background: "#00040a",
-              }
+              },
             }}
           >
             Начать тест
@@ -66,7 +73,7 @@ const TestPreview = ({ selectedTest }: TestPreviewProps): React.ReactElement => 
             color: "white",
             fontSize: "18px",
             fontWeight: 400,
-            margin: "20px auto"
+            margin: "20px auto",
           }}
         >
           {selectedTest.description}
@@ -76,7 +83,7 @@ const TestPreview = ({ selectedTest }: TestPreviewProps): React.ReactElement => 
             color: "white",
             fontSize: "18px",
             fontWeight: 400,
-            marginTop: "50px"
+            marginTop: "50px",
           }}
         >
           Автор теста: {selectedTest.author.username}

@@ -10,14 +10,14 @@ class TestsService extends CommonService {
   /**
    * Получить список тестов
    */
-  getTestsList(page: number, search?: string, categoryId?: number): Promise<IPage<ITest>> {
+  getTestsList(page = 1, search?: string, categoryId?: number): Promise<IPage<ITest>> {
     return axios.get<IPage<ITest>>(`${this.url}/`, { params: { page, search, category_id: categoryId } }).then(
       response => {
         return response.data;
       },
       reason => Promise.reject(reason)
     );
-  };
+  }
 
   /**
    * Получить тест по id
@@ -28,7 +28,7 @@ class TestsService extends CommonService {
       response => response.data,
       reason => Promise.reject(reason)
     );
-  };
+  }
 
   /**
    * Получает список ответов пользователя
@@ -39,7 +39,7 @@ class TestsService extends CommonService {
       response => converCase(response.data, "camel") as IUserAnswer[],
       reason => Promise.reject(reason)
     );
-  };
+  }
 
   /**
    * Отправляет ответ пользователя на сервер
@@ -49,7 +49,7 @@ class TestsService extends CommonService {
       response => converCase(response.data, "camel") as IUserAnswer[],
       reason => Promise.reject(reason)
     );
-  };
+  }
 
   /**
    * Список всех категорий
@@ -59,7 +59,7 @@ class TestsService extends CommonService {
       response => converCase(response.data, "camel") as ITestCategory[],
       reason => Promise.reject(reason)
     );
-  };
+  }
 
   /**
    * Возвращает результаты по тесту
@@ -69,7 +69,17 @@ class TestsService extends CommonService {
       response => converCase(response.data, "camel") as ITestResult[],
       reason => Promise.reject(reason)
     );
-  };
-};
+  }
+
+  /**
+   * Удаляет все результаты по тесты у пользователя
+   */
+  deleteTestResult(testId: number): Promise<{ message: string }> {
+    return axios.delete<{ message: string }>(`${this.url}/result/${testId}/`).then(
+      response => response.data,
+      reason => Promise.reject(reason)
+    );
+  }
+}
 
 export default new TestsService();

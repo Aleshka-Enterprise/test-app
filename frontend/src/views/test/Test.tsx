@@ -8,7 +8,7 @@ import { buttonMixin } from "../../utils/styles";
 import { useNavigate } from "react-router-dom";
 
 interface TestProps {
-selectedTest: ITest,
+  selectedTest: ITest;
 }
 
 /**
@@ -38,9 +38,9 @@ const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
       selectedAnswer,
       user: UserStore.user?.id as number,
       test: selectedTest.id,
-    }
+    };
     if (selectedAnswers.find(answer => answer.question === question)) {
-      setSelectedAnswers(selectedAnswers.map(el => el.question !== anser.question ? el : anser));
+      setSelectedAnswers(selectedAnswers.map(el => (el.question !== anser.question ? el : anser)));
     } else {
       setSelectedAnswers([...selectedAnswers, anser]);
     }
@@ -63,7 +63,9 @@ const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
         <Typography sx={{ fontSize: "32px", color: "white" }}>/{questions.length}</Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: "50px" }}>
-        <Box sx={{ fontSize: "48px", fontWeight: 500, color: "white" }}>{index + 1}. {questions[index]?.question}</Box>
+        <Box sx={{ fontSize: "48px", fontWeight: 500, color: "white" }}>
+          {index + 1}. {questions[index]?.question}
+        </Box>
         <Box>
           {questions[index]?.answer_options?.map(el => {
             return (
@@ -78,10 +80,12 @@ const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
                   cursor: "pointer",
                 }}
                 onClick={(): void => onAnswerSelect(questions[index]?.id, el.id)}
-              > 
+              >
                 <Checkbox
-                  sx={{ "path": { color: "white" } }}
-                  checked={el.id === selectedAnswers.find(anser => anser.question === questions[index].id)?.selectedAnswer}
+                  sx={{ path: { color: "white" } }}
+                  checked={
+                    el.id === selectedAnswers.find(anser => anser.question === questions[index].id)?.selectedAnswer
+                  }
                 />
                 <Box sx={{ marginLeft: "20px" }}>{el.answer_text}</Box>
               </Box>
@@ -90,13 +94,12 @@ const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           {index > 0 && (
-            <Button sx={buttonMixin} onClick={(): void => setIndex(index - 1)}>{"<"}</Button>
+            <Button sx={buttonMixin} onClick={(): void => setIndex(index - 1)}>
+              {"<"}
+            </Button>
           )}
           {selectedAnswers.find(el => el.question === questions[index].id) && (
-            <Button
-              sx={buttonMixin}
-              onClick={(): void => submitAnswer()}
-            >
+            <Button sx={buttonMixin} onClick={(): void => submitAnswer()}>
               {">"}
             </Button>
           )}

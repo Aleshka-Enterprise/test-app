@@ -19,21 +19,23 @@ const App = observer((): React.ReactElement => {
       UsersService.getCurrentUser().then(res => {
         UsersStore.user = res;
       });
-    };
+    }
   }, []);
-  
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="home" replace />} />
-        <Route path="home" element={<Home setSelectedTest={setSelectedTest} />} />
-        <Route path="autorization" element={<Autorization />} />
-        {selectedTest && <Route path="preview" element={<TestPreview selectedTest={selectedTest} />} />}
-        {selectedTest && UsersStore.user && <Route path="test" element={<Test selectedTest={selectedTest} />} />}
-        {selectedTest && UsersStore.user && <Route path="result" element={<TestResult selectedTest={selectedTest} />} />}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path='/' element={<Navigate to='home' replace />} />
+        <Route path='home' element={<Home setSelectedTest={setSelectedTest} />} />
+        <Route path='autorization' element={<Autorization />} />
+        {selectedTest && <Route path='preview' element={<TestPreview selectedTest={selectedTest} />} />}
+        {selectedTest && UsersStore.user && <Route path='test' element={<Test selectedTest={selectedTest} />} />}
+        {selectedTest && UsersStore.user && (
+          <Route path='result' element={<TestResult selectedTest={selectedTest} />} />
+        )}
+        <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
-  </BrowserRouter>
+    </BrowserRouter>
   );
 });
 

@@ -1,3 +1,4 @@
+import React from "react";
 import { useCallback } from "react";
 import { Engine } from "tsparticles-engine";
 import Particles from "react-particles";
@@ -6,7 +7,7 @@ import { loadSlim } from "tsparticles-slim";
 /**
  * Экран с частицами
  */
-const TasksParticles = () => {
+const TasksParticles = (): React.ReactElement => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);
@@ -14,7 +15,7 @@ const TasksParticles = () => {
   return (
     <div style={{ position: "absolute", width: "100%", height: "100%", zIndex: -1 }}>
       <Particles
-        id="tsparticles"
+        id='tsparticles'
         init={particlesInit}
         options={{
           background: {
@@ -22,17 +23,17 @@ const TasksParticles = () => {
               value: "#000000",
             },
           },
-              interactivity: {
-                events: {
-                onHover: {
-                  enable: true,
-                  mode: "repulse",
-                },
-                resize: true,
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: "repulse",
               },
-              modes: {
-                push: {
-                  quantity: 4,
+              resize: true,
+            },
+            modes: {
+              push: {
+                quantity: 4,
               },
               repulse: {
                 distance: 200,
@@ -42,43 +43,43 @@ const TasksParticles = () => {
           },
           particles: {
             color: {
-            value: "#ffffff",
-          },
-          links: {
-            color: "#ffffff",
-            distance: 150,
-            enable: true,
-            opacity: 0.5,
-            width: 1,
-          },
-          move: {
-            direction: "none",
-            enable: true,
-            outModes: {
-                default: "bounce",
+              value: "#ffffff",
             },
-            random: false,
-            speed: 6,
-            straight: false,
-          },
-          number: {
-            density: {
+            links: {
+              color: "#ffffff",
+              distance: 150,
               enable: true,
-              area: 800,
+              opacity: 0.5,
+              width: 1,
             },
-            value: 80,
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: false,
+              speed: 6,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 80,
+            },
+            opacity: {
+              value: 0.5,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 1, max: 5 },
+            },
           },
-          opacity: {
-            value: 0.5,
-          },
-          shape: {
-            type: "circle",
-          },
-          size: {
-            value: { min: 1, max: 5 },
-          },
-        },
-        detectRetina: true,
+          detectRetina: true,
         }}
       />
     </div>

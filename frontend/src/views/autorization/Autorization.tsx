@@ -8,7 +8,6 @@ import UsersService from "../../services/users/users.service";
 import TasksParticles from "../../components/particles/particles";
 import { Box, Button } from "@mui/material";
 
-
 const userSchema = yup.object({
   username: yup.string().required(REQUIRED_FIELD_ERROR),
   password: yup.string().required(REQUIRED_FIELD_ERROR),
@@ -27,14 +26,14 @@ const Autorization = (): React.ReactElement => {
     },
     onSubmit: (values): void => {
       UsersService.autorization(values)
-      .then((): void => {
-        navigate("/");
-        UsersService.getCurrentUser();
-      })
-      .catch(() => {
-        console.log({ title: "Ошибка", description: "Не верный логин или пароль!" });
-        formik.setSubmitting(false);
-      });
+        .then((): void => {
+          navigate("/");
+          UsersService.getCurrentUser();
+        })
+        .catch(() => {
+          console.log({ title: "Ошибка", description: "Не верный логин или пароль!" });
+          formik.setSubmitting(false);
+        });
     },
     validationSchema: userSchema,
   });
@@ -42,17 +41,26 @@ const Autorization = (): React.ReactElement => {
   return (
     <Box sx={{ display: "flex", alignItems: "center", height: "100%", justifyContent: "center" }}>
       <TasksParticles />
-      <Box sx={{ width: "400px", height: "70%", backgroundColor: "white", borderRadius: "10px", padding: "20px 50px", marginTop: "15%" }}>
       <Box
         sx={{
-          fontSize: "38px",
-          fontWeight: 600,
-          display: "flex",
-          alignItems: "center",
-          color: "#212529",
-          margin: "0 66% 20px auto",
-          width: "50px",
+          width: "400px",
+          height: "70%",
+          backgroundColor: "white",
+          borderRadius: "10px",
+          padding: "20px 50px",
+          marginTop: "15%",
         }}
+      >
+        <Box
+          sx={{
+            fontSize: "38px",
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            color: "#212529",
+            margin: "0 66% 20px auto",
+            width: "50px",
+          }}
         >
           Авторизация
         </Box>
@@ -63,15 +71,12 @@ const Autorization = (): React.ReactElement => {
           placeholder={"Введите имя пользователя"}
         />
         <Box sx={{ width: "100%", marginTop: "15px" }}>
-          <FieldInput
-            formik={formik}
-            fieldName={"password"}
-            label={"Пароль"}
-            placeholder={"Введите пароль"}
-          />
+          <FieldInput formik={formik} fieldName={"password"} label={"Пароль"} placeholder={"Введите пароль"} />
         </Box>
         <Button
-          onClick={() => formik.submitForm()}
+          onClick={(): void => {
+            formik.submitForm();
+          }}
           sx={{
             cursor: "pointer",
             color: "#ffffff",
@@ -85,13 +90,13 @@ const Autorization = (): React.ReactElement => {
             border: "solid 1px #32373d",
             "&:hover": {
               background: "#00040a",
-            }
+            },
           }}
         >
           Авторизоваться
         </Button>
       </Box>
-    </Box> 
+    </Box>
   );
 };
 
