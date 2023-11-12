@@ -28,8 +28,8 @@ const App = observer((): React.ReactElement => {
         <Route path='/' element={<Navigate to='home' replace />} />
         <Route path='home' element={<Home setSelectedTest={setSelectedTest} />} />
         <Route path='autorization' element={<Autorization />} />
-        {selectedTest && <Route path='preview' element={<TestPreview selectedTest={selectedTest} />} />}
-        {selectedTest && UsersStore.user && <Route path='test' element={<Test selectedTest={selectedTest} />} />}
+        {selectedTest && <Route path='preview' element={<TestPreview />} />}
+        {selectedTest && UsersStore.user && <Route path='test' element={<Test />} />}
         {selectedTest && UsersStore.user && (
           <Route path='result' element={<TestResult selectedTest={selectedTest} />} />
         )}

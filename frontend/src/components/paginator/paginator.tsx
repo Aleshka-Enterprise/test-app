@@ -62,6 +62,7 @@ const Paginator = ({ onPageSelect, selectedPage, pageCount }: PaginatorProps): R
       <Box
         sx={elementMixin}
         className={selectedPage <= 1 ? "disabled" : ""}
+        data-testid='previous'
         onClick={(): void => {
           if (selectedPage > 1) {
             onPageSelect(selectedPage - 1);
@@ -79,6 +80,7 @@ const Paginator = ({ onPageSelect, selectedPage, pageCount }: PaginatorProps): R
             onClick={(): void => {
               onPageSelect(page);
             }}
+            data-testid='element'
           >
             {page}
           </Box>
@@ -87,6 +89,7 @@ const Paginator = ({ onPageSelect, selectedPage, pageCount }: PaginatorProps): R
       <Box
         sx={elementMixin}
         className={selectedPage >= Math.max(...pageList) ? "disabled" : ""}
+        data-testid='next'
         onClick={(): void => {
           if (selectedPage < Math.max(...pageList)) {
             onPageSelect(selectedPage + 1);

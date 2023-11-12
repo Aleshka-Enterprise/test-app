@@ -2,22 +2,22 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { ITest } from "../../models/tests/tests";
 import { useNavigate } from "react-router-dom";
-
-interface TestPreviewProps {
-  selectedTest: ITest;
-}
+import { observer } from "mobx-react";
+import TestsStore from "../../store/tests";
 
 /**
  * Предпросмотр выбранного теста
  */
-const TestPreview = ({ selectedTest }: TestPreviewProps): React.ReactElement => {
+const TestPreview = observer((): React.ReactElement => {
   const navigate = useNavigate();
+  const selectedTest = TestsStore.selectedTest as ITest;
+  console.log(TestsStore.selectedTest);
 
   return (
     <Box sx={{ height: "100vh", background: "#5e5e73", padding: "0 450px" }}>
       <Box sx={{ paddingTop: "50px" }}>
         <img
-          src={selectedTest.img}
+          src={selectedTest?.img}
           alt={selectedTest.title}
           style={{
             width: "200px",
@@ -91,6 +91,6 @@ const TestPreview = ({ selectedTest }: TestPreviewProps): React.ReactElement => 
       </Box>
     </Box>
   );
-};
+});
 
 export default TestPreview;

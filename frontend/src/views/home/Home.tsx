@@ -99,6 +99,7 @@ const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
                 }}
                 onClick={(): void => {
                   setSelectedTest(test);
+                  TestsStore.selectedTest = test;
                   navigate("/preview/");
                 }}
               >

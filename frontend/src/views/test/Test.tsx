@@ -1,43 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { IQuestion, ITest, IUserAnswer } from "../../models/tests/tests";
+import { IQuestion, IUserAnswer } from "../../models/tests/tests";
 import { Box, Typography, Checkbox, Button } from "@mui/material";
 import TestsService from "../../services/tests/tests.service";
 import { observer } from "mobx-react";
 import UserStore from "../../store/users";
 import { buttonMixin } from "../../utils/styles";
 import { useNavigate } from "react-router-dom";
-
-interface TestProps {
-  selectedTest: ITest;
-}
+import TestsStore from "../../store/tests";
 
 /**
  * Страница для прохождения теста
  */
-const Test = observer(({ selectedTest }: TestProps): React.ReactElement => {
+const Test = observer((): React.ReactElement => {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [index, setIndex] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Omit<IUserAnswer, "id">[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    TestsService.getTest(selectedTest.id).then(test => {
-      setQuestions(test.questions || []);
-      TestsService.getUserAnswersList(selectedTest.id).then(res => {
-        setSelectedAnswers(res);
-        const answersQuestionsIds = res.map(userAnswer => userAnswer.question);
-        const index = (test.questions || []).findIndex(question => !answersQuestionsIds.includes(question.id));
-        setIndex(Math.max(index, 0));
+    TestsStore.selectedTest?.id &&
+      TestsService.getTest(TestsStore.selectedTest?.id).then(test => {
+        setQuestions(test.questions || []);
+        TestsService.getUserAnswersList(TestsStore.selectedTest?.id).then(res => {
+          setSelectedAnswers(res);
+          const answersQuestionsIds = res.map(userAnswer => userAnswer.question);
+          const index = (test.questions || []).findIndex(question => !answersQuestionsIds.includes(question.id));
+          setIndex(Math.max(index, 0));
+        });
       });
-    });
-  }, [selectedTest]);
+  }, []);
 
   const onAnswerSelect = (question: number, selectedAnswer: number): void => {
     const anser: Omit<IUserAnswer, "id"> = {
       question,
       selectedAnswer,
       user: UserStore.user?.id as number,
-      test: selectedTest.id,
+      test: TestsStore.selectedTest?.id as number,
     };
     if (selectedAnswers.find(answer => answer.question === question)) {
       setSelectedAnswers(selectedAnswers.map(el => (el.question !== anser.question ? el : anser)));
