@@ -65,7 +65,7 @@ const Test = observer((): React.ReactElement => {
           {index + 1}. {questions[index]?.question}
         </Box>
         <Box>
-          {questions[index]?.answer_options?.map(el => {
+          {questions[index]?.answerOptions?.map(el => {
             return (
               <Box
                 key={el.id}
@@ -85,7 +85,7 @@ const Test = observer((): React.ReactElement => {
                     el.id === selectedAnswers.find(anser => anser.question === questions[index].id)?.selectedAnswer
                   }
                 />
-                <Box sx={{ marginLeft: "20px" }}>{el.answer_text}</Box>
+                <Box sx={{ marginLeft: "20px" }}>{el.answerText}</Box>
               </Box>
             );
           })}

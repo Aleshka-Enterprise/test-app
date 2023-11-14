@@ -1,8 +1,8 @@
-import React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Engine } from "tsparticles-engine";
 import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
+import { Box } from "@mui/material";
 
 /**
  * Экран с частицами
@@ -13,7 +13,7 @@ const TasksParticles = (): React.ReactElement => {
   }, []);
 
   return (
-    <div style={{ position: "absolute", width: "100%", height: "100%", zIndex: -1 }}>
+    <Box sx={{ position: "absolute", width: "100%", height: "100%", zIndex: -1 }}>
       <Particles
         id='tsparticles'
         init={particlesInit}
@@ -82,7 +82,7 @@ const TasksParticles = (): React.ReactElement => {
           detectRetina: true,
         }}
       />
-    </div>
+    </Box>
   );
 };
 

@@ -2,7 +2,6 @@ import { CommonService } from "../common.service";
 import axios from "axios";
 import { ITest, ITestCategory, ITestResult, IUserAnswer } from "../../models/tests/tests";
 import { IPage } from "../../models/common";
-import { converCase } from "../../utils/utils";
 
 class TestsService extends CommonService {
   protected url = `${this.baseURL}/api/tests`;
@@ -36,7 +35,7 @@ class TestsService extends CommonService {
    */
   getUserAnswersList(testId?: number): Promise<IUserAnswer[]> {
     return axios.get<IUserAnswer[]>(`${this.url}/user-answers/`, { params: { test_id: testId } }).then(
-      response => converCase(response.data, "camel") as IUserAnswer[],
+      response => response.data,
       reason => Promise.reject(reason)
     );
   }
@@ -45,8 +44,8 @@ class TestsService extends CommonService {
    * Отправляет ответ пользователя на сервер
    */
   submitAnswer(answer: Omit<IUserAnswer, "id">): Promise<IUserAnswer[]> {
-    return axios.post<IUserAnswer[]>(`${this.url}/user-answers/`, converCase(answer, "snake")).then(
-      response => converCase(response.data, "camel") as IUserAnswer[],
+    return axios.post<IUserAnswer[]>(`${this.url}/user-answers/`, answer).then(
+      response => response.data,
       reason => Promise.reject(reason)
     );
   }
@@ -56,7 +55,7 @@ class TestsService extends CommonService {
    */
   getCategoriesList(): Promise<ITestCategory[]> {
     return axios.get<ITestCategory[]>(`${this.url}/category/`).then(
-      response => converCase(response.data, "camel") as ITestCategory[],
+      response => response.data,
       reason => Promise.reject(reason)
     );
   }
@@ -66,7 +65,7 @@ class TestsService extends CommonService {
    */
   getTestResult(testId: number): Promise<ITestResult[]> {
     return axios.get<ITestResult[]>(`${this.url}/result/${testId}/`).then(
-      response => converCase(response.data, "camel") as ITestResult[],
+      response => response.data,
       reason => Promise.reject(reason)
     );
   }

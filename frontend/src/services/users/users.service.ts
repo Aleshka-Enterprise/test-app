@@ -31,7 +31,7 @@ class UsersService extends CommonService {
   getCurrentUser(): Promise<IUser> {
     return axios.get<IUser>(`${this.url}/get_current_user/`).then(
       response => {
-        const data = converCase(response.data, "camel") as IUser;
+        const data = response.data;
         UsersStore.user = data;
         return response.data;
       },
@@ -49,7 +49,7 @@ class UsersService extends CommonService {
     return axios.get<void>(`${this.url}/logout/`).then(
       () => {
         localStorage.removeItem("token");
-        delete axios.defaults.headers?.common["Authorization"];
+        delete axios.defaults.headers?.common.Authorization;
       },
       reason => Promise.reject(reason)
     );
@@ -59,9 +59,9 @@ class UsersService extends CommonService {
    * Регистрация пользователя
    */
   registration(data: IUserRegisteration): Promise<IUserRegisteration> {
-    return axios.post<IUserRegisteration>(`${this.url}/registration/`, converCase(data, "snake")).then(
+    return axios.post<IUserRegisteration>(`${this.url}/registration/`, data).then(
       response => {
-        return converCase(response.data, "camel") as IUser;
+        return response.data;
       },
       reason => Promise.reject(reason)
     );

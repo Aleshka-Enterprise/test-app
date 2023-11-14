@@ -27,6 +27,11 @@ class Test(models.Model):
     def __str__(self):
         return self.title
 
+    def validate_constraints(self, exclude=None):
+        if self.question_set.count() == 0 and self.is_published:
+            raise ValueError("Невозможно опубликовать! В тесте нет ни одного вопроса")
+        return super(Test, self).validate_constraints()
+
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'

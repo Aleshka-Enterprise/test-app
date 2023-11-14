@@ -26,7 +26,7 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
 
   const answers = result.map((res, index) => {
     const getAnswerText = (id: number): string | undefined => {
-      return res.question.answer_options.find(el => el.id === id)?.answer_text;
+      return res.question.answerOptions.find(el => el.id === id)?.answerText;
     };
 
     return {

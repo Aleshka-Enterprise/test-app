@@ -1,8 +1,5 @@
 import React from "react";
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { Box } from "@mui/material";
+import { Box, Button, Menu, MenuItem } from "@mui/material";
 
 interface DropDownProps {
   options: { title: string; id: number }[];
@@ -29,6 +26,7 @@ const DropDown = ({ options, name, onOptionSelect, selectedOptionId }: DropDownP
         aria-haspopup='true'
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        data-testid='btn'
       >
         {name}
       </Button>
@@ -56,6 +54,7 @@ const DropDown = ({ options, name, onOptionSelect, selectedOptionId }: DropDownP
               }}
               key={option.id}
               sx={{ color: selectedOptionId === option.id ? "red" : "blue" }}
+              data-testid='option'
             >
               {option.title}
             </MenuItem>

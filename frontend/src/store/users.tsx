@@ -6,16 +6,15 @@ class UsersStore {
 
   constructor() {
     makeAutoObservable(this);
-  };
+  }
 
   set user(value: IUser | undefined) {
-    this._user = value
-  };
+    this._user = value;
+  }
 
   get user(): IUser | undefined {
     return this._user;
-  };
-
+  }
 }
 
 export default new UsersStore();

@@ -10,13 +10,13 @@ export interface ITestCategory {
 
 export interface IAnswer {
   id: number;
-  answer_text: string;
+  answerText: string;
 }
 
 export interface IQuestion {
   id: number;
   question: string;
-  answer_options: IAnswer[];
+  answerOptions: IAnswer[];
 }
 
 export interface ITest {

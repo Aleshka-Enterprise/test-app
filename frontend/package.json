@@ -15,6 +15,7 @@
     "@types/react-dom": "^18.2.14",
     "axios": "^1.6.0",
     "formik": "^2.4.5",
+    "history": "^5.3.0",
     "lodash": "^4.17.21",
     "material-ui-popup-state": "^5.0.10",
     "mobx": "^6.10.2",
@@ -41,6 +42,11 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
   },
   "browserslist": {
     "production": [

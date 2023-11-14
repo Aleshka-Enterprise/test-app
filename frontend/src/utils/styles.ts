@@ -17,5 +17,5 @@ export const buttonMixin: SxProps = {
   border: "solid 1px #32373d",
   "&:hover": {
     background: "#00040a",
-  }
+  },
 };

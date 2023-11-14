@@ -6,10 +6,10 @@ import { BrowserRouter } from "react-router-dom";
 import TestsStore from "../../store/tests";
 
 const answers: IAnswer[] = [
-  { id: 1, answer_text: "text_1" },
-  { id: 2, answer_text: "text_2" },
-  { id: 3, answer_text: "text_3" },
-  { id: 4, answer_text: "text_4" },
+  { id: 1, answerText: "text_1" },
+  { id: 2, answerText: "text_2" },
+  { id: 3, answerText: "text_3" },
+  { id: 4, answerText: "text_4" },
 ];
 
 const selectedTest: ITest = {
@@ -28,12 +28,12 @@ const selectedTest: ITest = {
     {
       id: 1,
       question: "question 1",
-      answer_options: answers,
+      answerOptions: answers,
     },
     {
       id: 2,
       question: "question 2",
-      answer_options: answers,
+      answerOptions: answers,
     },
   ],
 };

@@ -39,6 +39,7 @@ const FieldInput = ({
           readOnly={readonly}
           value={value || ""}
           className={formik.touched[fieldName] && formik.errors[fieldName] ? "error" : ""}
+          data-testid={fieldName}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>): void => {
             if (event.key === "Enter") {
               formik.submitForm();
@@ -51,6 +52,7 @@ const FieldInput = ({
           <label className='custom-file-upload'>
             <input
               type='file'
+              data-testid={fieldName}
               name={formikProps.name as string}
               onChange={(e): void => {
                 formik.setFieldValue(fieldName, e.target.files?.[0]);
