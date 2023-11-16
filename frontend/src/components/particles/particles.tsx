@@ -1,20 +1,20 @@
 import React, { useCallback } from "react";
 import { Engine } from "tsparticles-engine";
-import Particles from "react-particles";
+import ReactParticles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 import { Box } from "@mui/material";
 
 /**
  * Экран с частицами
  */
-const TasksParticles = (): React.ReactElement => {
+const Particles = (): React.ReactElement => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);
 
   return (
-    <Box sx={{ position: "absolute", width: "100%", height: "100%", zIndex: -1 }}>
-      <Particles
+    <Box sx={{ position: "absolute", width: "100%", height: "100%", zIndex: -1 }} data-testid='particles'>
+      <ReactParticles
         id='tsparticles'
         init={particlesInit}
         options={{
@@ -86,4 +86,4 @@ const TasksParticles = (): React.ReactElement => {
   );
 };
 
-export default TasksParticles;
+export default Particles;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TestsService from "../../services/tests/tests.service";
 import { ITest, ITestCategory } from "../../models/tests/tests";
 import { Box, Grid, Typography, Input } from "@mui/material";
-import Paginator from "../../components/paginator/paginator";
+import Paginator from "../../components/paginator/Paginator";
 import { useNavigate } from "react-router-dom";
 import DropDown from "../../components/drop-down/DropDown";
 import { debounce } from "lodash";

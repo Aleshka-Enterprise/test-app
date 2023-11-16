@@ -1,11 +1,11 @@
 import React from "react";
-import FieldInput from "../../components/field-input/field-input";
+import FieldInput from "../../components/field-input/FieldInput";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { REQUIRED_FIELD_ERROR } from "../../utils/utils";
 import * as yup from "yup";
 import UsersService from "../../services/users/users.service";
-import TasksParticles from "../../components/particles/particles";
+import TasksParticles from "../../components/particles/Particles";
 import { Box, Button } from "@mui/material";
 
 const userSchema = yup.object({
@@ -70,8 +70,14 @@ const Autorization = (): React.ReactElement => {
           label={"Имя пользователя"}
           placeholder={"Введите имя пользователя"}
         />
-        <Box sx={{ width: "100%", marginTop: "15px" }}>
-          <FieldInput formik={formik} fieldName={"password"} label={"Пароль"} placeholder={"Введите пароль"} />
+        <Box sx={{ width: "100%", marginTop: "30px" }}>
+          <FieldInput
+            formik={formik}
+            type={"password"}
+            fieldName={"password"}
+            label={"Пароль"}
+            placeholder={"Введите пароль"}
+          />
         </Box>
         <Button
           onClick={(): void => {

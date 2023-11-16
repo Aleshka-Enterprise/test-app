@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import Paginator from "./paginator";
+import Paginator from "./Paginator";
 
 interface IContainerProps {
   maxPage?: number;

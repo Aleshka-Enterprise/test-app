@@ -39,16 +39,16 @@ describe("<Autorization />", () => {
 
   it("Компонент рендерится", () => {
     expect(screen.getByText("Авторизация")).toBeInTheDocument();
-    expect(screen.getByText("Имя пользователя")).toBeInTheDocument();
-    expect(screen.getByText("Пароль")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Введите пароль")).toBeInTheDocument();
     expect(screen.getByText("Авторизоваться")).toBeInTheDocument();
-    expect(screen.getByTestId("username")).toBeInTheDocument();
-    expect(screen.getByTestId("password")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Введите пароль")).toBeInTheDocument();
   });
 
   it("Если поля не заполнены, форма не отправляется", () => {
-    expect(screen.getByTestId("username")).toHaveValue("");
-    expect(screen.getByTestId("password")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите пароль")).toHaveValue("");
 
     fireEvent.click(screen.getByText("Авторизоваться"));
 
@@ -56,40 +56,40 @@ describe("<Autorization />", () => {
   });
 
   it("Если заполнен только пользователь, то форма не отправляется", () => {
-    expect(screen.getByTestId("username")).toHaveValue("");
-    expect(screen.getByTestId("password")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите пароль")).toHaveValue("");
 
-    fireEvent.change(screen.getByTestId("username"), { target: { value: "Пользователь" } });
+    fireEvent.change(screen.getByPlaceholderText("Введите имя пользователя"), { target: { value: "Пользователь" } });
     fireEvent.click(screen.getByText("Авторизоваться"));
 
     expect(mockedUsedNavigate).not.toBeCalled();
     expect(UsersService.autorization).not.toBeCalled();
     expect(UsersService.getCurrentUser).not.toBeCalled();
-    expect(screen.getByTestId("username")).toHaveValue("Пользователь");
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toHaveValue("Пользователь");
   });
 
   it("Если заполнен только пароль, то форма не отправляется", () => {
-    expect(screen.getByTestId("username")).toHaveValue("");
-    expect(screen.getByTestId("password")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите пароль")).toHaveValue("");
 
-    fireEvent.change(screen.getByTestId("password"), { target: { value: "password123" } });
+    fireEvent.change(screen.getByPlaceholderText("Введите пароль"), { target: { value: "password123" } });
     fireEvent.click(screen.getByText("Авторизоваться"));
 
     expect(mockedUsedNavigate).not.toBeCalled();
     expect(UsersService.autorization).not.toBeCalled();
     expect(UsersService.getCurrentUser).not.toBeCalled();
-    expect(screen.getByTestId("password")).toHaveValue("password123");
+    expect(screen.getByPlaceholderText("Введите пароль")).toHaveValue("password123");
   });
 
   it("Если заполнены оба поля, то форма отправляется", () => {
-    expect(screen.getByTestId("username")).toHaveValue("");
-    expect(screen.getByTestId("password")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Введите пароль")).toHaveValue("");
 
-    fireEvent.change(screen.getByTestId("password"), { target: { value: "password123" } });
-    fireEvent.change(screen.getByTestId("username"), { target: { value: "Пользователь" } });
+    fireEvent.change(screen.getByPlaceholderText("Введите пароль"), { target: { value: "password123" } });
+    fireEvent.change(screen.getByPlaceholderText("Введите имя пользователя"), { target: { value: "Пользователь" } });
     fireEvent.click(screen.getByText("Авторизоваться"));
 
-    expect(screen.getByTestId("password")).toHaveValue("password123");
-    expect(screen.getByTestId("username")).toHaveValue("Пользователь");
+    expect(screen.getByPlaceholderText("Введите пароль")).toHaveValue("password123");
+    expect(screen.getByPlaceholderText("Введите имя пользователя")).toHaveValue("Пользователь");
   });
 });
