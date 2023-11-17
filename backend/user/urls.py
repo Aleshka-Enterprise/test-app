@@ -5,6 +5,6 @@ from user.views import CreateUserAPIView, get_current_user
 
 urlpatterns = [
     path('autorization/', views.obtain_auth_token),
-    path('register/', CreateUserAPIView.as_view()),
+    path('registration/', CreateUserAPIView.as_view()),
     path('get_current_user/', get_current_user),
 ]

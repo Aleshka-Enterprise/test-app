@@ -6,7 +6,8 @@ import { REQUIRED_FIELD_ERROR } from "../../utils/utils";
 import * as yup from "yup";
 import UsersService from "../../services/users/users.service";
 import TasksParticles from "../../components/particles/Particles";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { buttonMixin, linkMixin } from "../../utils/styles";
 
 const userSchema = yup.object({
   username: yup.string().required(REQUIRED_FIELD_ERROR),
@@ -64,43 +65,24 @@ const Autorization = (): React.ReactElement => {
         >
           Авторизация
         </Box>
-        <FieldInput
-          formik={formik}
-          fieldName={"username"}
-          label={"Имя пользователя"}
-          placeholder={"Введите имя пользователя"}
-        />
+        <FieldInput formik={formik} fieldName={"username"} placeholder={"Введите имя пользователя"} />
         <Box sx={{ width: "100%", marginTop: "30px" }}>
-          <FieldInput
-            formik={formik}
-            type={"password"}
-            fieldName={"password"}
-            label={"Пароль"}
-            placeholder={"Введите пароль"}
-          />
+          <FieldInput formik={formik} type={"password"} fieldName={"password"} placeholder={"Введите пароль"} />
         </Box>
-        <Button
-          onClick={(): void => {
-            formik.submitForm();
-          }}
-          sx={{
-            cursor: "pointer",
-            color: "#ffffff",
-            backgroundColor: "#32373d",
-            alignItems: "center",
-            transition: "0.3s",
-            height: "40px",
-            marginTop: "30px",
-            borderRadius: "3px",
-            float: "right",
-            border: "solid 1px #32373d",
-            "&:hover": {
-              background: "#00040a",
-            },
-          }}
-        >
-          Авторизоваться
-        </Button>
+        <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: "30px" }}>
+          <Typography sx={linkMixin} onClick={(): void => navigate("/registration/")}>
+            Нужен аккаунт?
+          </Typography>
+          <Button
+            onClick={(): void => {
+              formik.submitForm();
+            }}
+            sx={buttonMixin}
+            disabled={formik.isSubmitting}
+          >
+            Авторизоваться
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

@@ -7,7 +7,6 @@ interface StoreInputProps<T> {
   formik: FormikProps<T>;
   fieldName: keyof T;
   placeholder?: string;
-  label?: string;
   type?: "password" | "text" | "email" | "file";
   readonly?: boolean;
 }
@@ -18,7 +17,6 @@ interface StoreInputProps<T> {
 function FieldInput<T>({
   formik,
   fieldName,
-  label,
   placeholder,
   type = "text",
   readonly = false,

@@ -11,11 +11,21 @@ export const buttonMixin: SxProps = {
   alignItems: "center",
   transition: "0.3s",
   height: "40px",
-  marginTop: "30px",
   borderRadius: "3px",
   float: "right",
   border: "solid 1px #32373d",
   "&:hover": {
     background: "#00040a",
+  },
+};
+
+export const linkMixin: SxProps = {
+  color: "blue",
+  fontSize: "12px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  "&:hover": {
+    color: "purple",
   },
 };

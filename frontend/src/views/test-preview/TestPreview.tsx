@@ -4,6 +4,7 @@ import { ITest } from "../../models/tests/tests";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
 import TestsStore from "../../store/tests";
+import { buttonMixin } from "../../utils/styles";
 
 /**
  * Предпросмотр выбранного теста
@@ -45,22 +46,7 @@ const TestPreview = observer((): React.ReactElement => {
             onClick={(): void => {
               navigate("/test/");
             }}
-            sx={{
-              cursor: "pointer",
-              color: "#ffffff",
-              backgroundColor: "#32373d",
-              alignItems: "center",
-              transition: "0.3s",
-              width: "250px",
-              height: "50px",
-              marginTop: "30px",
-              marginBottom: "20px",
-              borderRadius: "3px",
-              border: "solid 1px #32373d",
-              "&:hover": {
-                background: "#00040a",
-              },
-            }}
+            sx={{ ...buttonMixin, marginTop: "30px", width: "200px" }}
           >
             Начать тест
           </Button>

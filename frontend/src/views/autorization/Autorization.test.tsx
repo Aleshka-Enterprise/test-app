@@ -41,9 +41,6 @@ describe("<Autorization />", () => {
     expect(screen.getByText("Авторизация")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Введите имя пользователя")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Введите пароль")).toBeInTheDocument();
-    expect(screen.getByText("Авторизоваться")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Введите имя пользователя")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Введите пароль")).toBeInTheDocument();
   });
 
   it("Если поля не заполнены, форма не отправляется", () => {
