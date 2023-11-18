@@ -50,6 +50,7 @@ class UsersService extends CommonService {
       () => {
         localStorage.removeItem("token");
         delete axios.defaults.headers?.common.Authorization;
+        UsersStore.user = undefined;
       },
       reason => Promise.reject(reason)
     );

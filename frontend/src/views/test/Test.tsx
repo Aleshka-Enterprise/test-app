@@ -90,7 +90,15 @@ const Test = observer((): React.ReactElement => {
             );
           })}
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "50px",
+            width: "200px",
+          }}
+        >
           {index > 0 && (
             <Button sx={buttonMixin} onClick={(): void => setIndex(index - 1)}>
               {"<"}

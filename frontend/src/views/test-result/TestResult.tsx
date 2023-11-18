@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import { buttonMixin } from "../../utils/styles";
 import TestsStore from "../../store/tests";
 import { useNavigate } from "react-router-dom";
+import HeaderMenu from "../../components/header/Header";
 
 interface TestResultProps {
   selectedTest: ITest;
@@ -48,8 +49,9 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
 
   return (
     <Box>
+      <HeaderMenu />
       <Box
-        sx={{ height: "150px", background: "#5e5e73", padding: "50px 450px", position: "relative", display: "flex" }}
+        sx={{ height: "150px", background: "#5e5e73", padding: "84px 450px", position: "relative", display: "flex" }}
       >
         <Box
           sx={{
