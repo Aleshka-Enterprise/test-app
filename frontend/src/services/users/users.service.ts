@@ -2,7 +2,7 @@ import { CommonService } from "../common.service";
 import axios from "axios";
 import { IToken, IUser } from "../../models/users/users";
 import { PartialBy, logout } from "../../utils/utils";
-import UsersStore from "../../store/users";
+import UsersStore from "../../store/UsersStore";
 
 type IUserRegisteration = PartialBy<IUser, "id">;
 
@@ -77,6 +77,11 @@ class UsersService extends CommonService {
       response => response.data,
       reason => Promise.reject(reason)
     );
+  }
+
+  // TODO Убрать браг на бэке.
+  getImgUrl(url: string): string {
+    return `${this.baseURL}/${url}`;
   }
 }
 

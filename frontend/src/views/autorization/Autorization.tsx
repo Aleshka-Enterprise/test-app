@@ -8,6 +8,9 @@ import UsersService from "../../services/users/users.service";
 import TasksParticles from "../../components/particles/Particles";
 import { Box, Button, Typography } from "@mui/material";
 import { buttonMixin, linkMixin } from "../../utils/styles";
+import ErrorsStore from "../../store/ErrorsStore";
+import { IError } from "../../models/common";
+import { AxiosError } from "axios";
 
 const userSchema = yup.object({
   username: yup.string().required(REQUIRED_FIELD_ERROR),
@@ -31,8 +34,10 @@ const Autorization = (): React.ReactElement => {
           navigate("/");
           UsersService.getCurrentUser();
         })
-        .catch(() => {
-          console.log({ title: "Ошибка", description: "Не верный логин или пароль!" });
+        .catch((error: AxiosError<IError>) => {
+          if (error.response?.data?.errorMessage) {
+            ErrorsStore.errorMessage = error.response.data.errorMessage;
+          }
           formik.setSubmitting(false);
         });
     },

@@ -4,9 +4,9 @@ import { Box, Typography, Button } from "@mui/material";
 import TestsService from "../../services/tests/tests.service";
 import { observer } from "mobx-react";
 import { buttonMixin } from "../../utils/styles";
-import TestsStore from "../../store/tests";
+import TestsStore from "../../store/TestsStore";
 import { useNavigate } from "react-router-dom";
-import HeaderMenu from "../../components/header/Header";
+import HeaderMenu from "../../components/header/HeaderMenu";
 
 interface TestResultProps {
   selectedTest: ITest;
@@ -20,8 +20,12 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
   const navigate = useNavigate();
 
   useEffect(() => {
-    TestsService.getTestResult(selectedTest.id).then(test => {
-      setResult(test);
+    TestsService.getTestResult(selectedTest.id).then(results => {
+      // Если тест начать заново и нажать вернуться, то вкладка ломается. В таком случае редиректим на домашнюю страницу
+      if (!results) {
+        navigate("/");
+      }
+      setResult(results);
     });
   }, [selectedTest]);
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import UsersStore from "../../store/users";
+import UsersStore from "../../store/UsersStore";
 import UsersService from "../../services/users/users.service";
 import { Box, Typography } from "@mui/material";
 
@@ -42,8 +42,9 @@ const HeaderMenu = observer((): React.ReactElement => {
         <Typography sx={menuOptionMixim} onClick={(): void => navigate("/profile/", { replace: true })}>
           Профиль
         </Typography>
-        <Typography sx={menuOptionMixim}>Мои тесты</Typography>
-        <Typography sx={menuOptionMixim}>Админ-панель</Typography>
+        {(UsersStore.user?.isStaff || UsersStore.user?.isSuperuser) && (
+          <Typography sx={menuOptionMixim}>Админ-панель</Typography>
+        )}
         <Box sx={{ borderBottom: "solid 1px gray" }} />
         <Typography
           sx={menuOptionMixim}

@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import Header from "./Header";
+import Header from "./HeaderMenu";
 import UsersService from "../../services/users/users.service";
 import { Router, Navigator } from "react-router";
 

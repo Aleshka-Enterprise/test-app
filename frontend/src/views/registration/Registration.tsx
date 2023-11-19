@@ -8,6 +8,9 @@ import UsersService from "../../services/users/users.service";
 import TasksParticles from "../../components/particles/Particles";
 import { Box, Button, Typography } from "@mui/material";
 import { buttonMixin, linkMixin } from "../../utils/styles";
+import { AxiosError } from "axios";
+import ErrorsStore from "../../store/ErrorsStore";
+import { IError } from "../../models/common";
 
 const userSchema = yup.object({
   username: yup.string().required(REQUIRED_FIELD_ERROR),
@@ -38,7 +41,14 @@ const Registration = (): React.ReactElement => {
         formik.setErrors({ password: "Пароли должны совпадать", repeatPassword: "Пароли должны совпадать" });
         formik.setSubmitting(false);
       } else {
-        UsersService.registration(values).then(() => navigate("/autorization/"));
+        UsersService.registration(values)
+          .then(() => navigate("/autorization/"))
+          .catch((error: AxiosError<IError>) => {
+            if (error.response?.data?.errorMessage) {
+              ErrorsStore.errorMessage = error.response.data.errorMessage;
+            }
+            formik.setSubmitting(false);
+          });
       }
     },
     validationSchema: userSchema,

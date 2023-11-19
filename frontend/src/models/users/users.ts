@@ -9,5 +9,7 @@ export interface IUser {
   lastName: string;
   email: string;
   id: number;
-  image?: string | File;
+  img?: string | File;
+  isSuperuser?: boolean;
+  isStaff?: boolean;
 }

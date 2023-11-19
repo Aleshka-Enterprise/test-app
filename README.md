@@ -8,7 +8,7 @@
 # Запуск
 ## Frontend
 ```
-npm install
+npm --legacy-peer-deps install
 npm start
 ```
 ## Backend

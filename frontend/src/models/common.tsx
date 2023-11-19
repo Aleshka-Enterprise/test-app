@@ -4,3 +4,7 @@ export interface IPage<T> {
   next: string | null;
   previous: string | null;
 }
+
+export interface IError {
+  errorMessage: string;
+}

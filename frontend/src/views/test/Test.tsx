@@ -3,10 +3,10 @@ import { IQuestion, IUserAnswer } from "../../models/tests/tests";
 import { Box, Typography, Checkbox, Button } from "@mui/material";
 import TestsService from "../../services/tests/tests.service";
 import { observer } from "mobx-react";
-import UserStore from "../../store/users";
+import UserStore from "../../store/UsersStore";
 import { buttonMixin } from "../../utils/styles";
 import { useNavigate } from "react-router-dom";
-import TestsStore from "../../store/tests";
+import TestsStore from "../../store/TestsStore";
 
 /**
  * Страница для прохождения теста

@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import TestPreview from "./TestPreview";
 import { IAnswer, ITest } from "../../models/tests/tests";
 import { BrowserRouter } from "react-router-dom";
-import TestsStore from "../../store/tests";
+import TestsStore from "../../store/TestsStore";
 
 const answers: IAnswer[] = [
   { id: 1, answerText: "text_1" },

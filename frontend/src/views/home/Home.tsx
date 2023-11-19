@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 import DropDown from "../../components/drop-down/DropDown";
 import { debounce } from "lodash";
 import { observer } from "mobx-react";
-import TestsStore from "../../store/tests";
-import HeaderMenu from "../../components/header/Header";
+import TestsStore from "../../store/TestsStore";
+import HeaderMenu from "../../components/header/HeaderMenu";
+import noImage from "../../assets/images/no-image.png";
 
 interface HomeProps {
   setSelectedTest: (test: ITest) => void;
@@ -108,7 +109,7 @@ const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
                 >
                   <img
                     style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "50%" }}
-                    src={test.img}
+                    src={test.img || noImage}
                     alt={test.title}
                   />
                   <Box sx={{ display: "flex", alignItems: "center" }}>
