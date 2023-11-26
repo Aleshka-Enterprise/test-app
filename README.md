@@ -20,6 +20,7 @@ pip install -r requirements.txt
 ```
 python manage.py migrate
 ```
+### Отредактировать .env
 ### Запуск сервера
 ```
 python manage.py runserver

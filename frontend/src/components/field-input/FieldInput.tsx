@@ -1,7 +1,7 @@
 import React from "react";
 import { FormikProps } from "formik";
 import { getFieldProps } from "../../utils/formik-fields";
-import { Box, Input, Typography } from "@mui/material";
+import { Box, Input, Typography, SxProps } from "@mui/material";
 
 interface StoreInputProps<T> {
   formik: FormikProps<T>;
@@ -9,6 +9,7 @@ interface StoreInputProps<T> {
   placeholder?: string;
   type?: "password" | "text" | "email" | "file";
   readonly?: boolean;
+  style?: SxProps;
 }
 
 /**
@@ -20,13 +21,14 @@ function FieldInput<T>({
   placeholder,
   type = "text",
   readonly = false,
+  style,
 }: StoreInputProps<T>): React.ReactElement {
   const formikProps = getFieldProps(formik, fieldName);
   const value = formik.values[fieldName];
   const showError = (formik.touched[fieldName] && formik.errors[fieldName]) || formik.isSubmitting;
 
   return (
-    <Box>
+    <Box sx={style}>
       {type !== "file" ? (
         <Box sx={{ width: "100% !important" }}>
           <Input

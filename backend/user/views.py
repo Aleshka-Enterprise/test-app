@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -7,6 +8,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from user.models import EmailVerification
 from user.serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -47,4 +49,38 @@ class CustomAuthToken(ObtainAuthToken):
 
     def handle_exception(self, exc):
         return Response({'errorMessage': 'Неверный логин или пароль!'}, status=400)
+
+
+class EmailVerificationView(TemplateView):
+    template_name = 'user/email_verification.html'
+
+    def get(self, request, *args, **kwargs):
+        res = super().get(EmailVerificationView, self)
+        email_verification = EmailVerification.objects.filter(uuid=kwargs.get('uuid'))
+        if email_verification.exists():
+            email_verification = email_verification.first()
+            user = email_verification.user
+            user.is_verified = True
+            user.save()
+
+        return res
+
+    def get_context_data(self, **kwargs):
+        email_verification = EmailVerification.objects.filter(uuid=self.kwargs.get('uuid'))
+        if email_verification.exists():
+            if email_verification.first().user.is_verified:
+                return {
+                    'title': 'Ошибка!',
+                    'message': 'Почта уже подтверждена!',
+                }
+            return {
+                'title': 'Поздравляем',
+                'message': 'Ваша учетная запись успешно подтверждена!',
+            }
+        else:
+            return {
+                'title': 'Что-то пошло не так!',
+                'message': 'Пользователь не найден',
+            }
+
 

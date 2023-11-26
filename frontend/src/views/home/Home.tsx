@@ -132,7 +132,16 @@ const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
           })}
         </Grid>
         {pageCount > 1 && (
-          <Box sx={{ position: "absolute", bottom: "35px", left: "calc(50% - 220px)" }}>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "35px",
+              left: "0",
+              width: "100vw",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Paginator onPageSelect={setCurrentPage} selectedPage={currentPage ?? 1} pageCount={pageCount} />
           </Box>
         )}

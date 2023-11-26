@@ -42,7 +42,10 @@ const Registration = (): React.ReactElement => {
         formik.setSubmitting(false);
       } else {
         UsersService.registration(values)
-          .then(() => navigate("/autorization/"))
+          .then(() => {
+            ErrorsStore.errorMessage = " На вашу почту было выслано письмо для подтверждения.";
+            navigate("/autorization/");
+          })
           .catch((error: AxiosError<IError>) => {
             if (error.response?.data?.errorMessage) {
               ErrorsStore.errorMessage = error.response.data.errorMessage;
