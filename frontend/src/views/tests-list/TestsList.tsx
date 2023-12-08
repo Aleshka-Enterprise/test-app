@@ -3,31 +3,31 @@ import TestsService from "../../services/tests/tests.service";
 import { ITest, ITestCategory } from "../../models/tests/tests";
 import { Box, Grid, Typography, Input } from "@mui/material";
 import Paginator from "../../components/paginator/Paginator";
-import { useNavigate } from "react-router-dom";
 import DropDown from "../../components/drop-down/DropDown";
 import { debounce } from "lodash";
 import { observer } from "mobx-react";
 import TestsStore from "../../store/TestsStore";
 import HeaderMenu from "../../components/header/HeaderMenu";
-import noImage from "../../assets/images/no-image.png";
-
-interface HomeProps {
-  setSelectedTest: (test: ITest) => void;
-}
+import UsersStore from "../../store/UsersStore";
+import TestCard from "../../components/test-card/TestCard";
 
 const PAGE_RANGE = 10;
 
+interface TestsListProps {
+  onlyUserTest?: boolean;
+}
+
 /**
- * Домашняя страница со списком тестов
+ * Страница с тестами (домашняя страница и "Мои тесты")
+ * @param onlyUserTest - Открыта страница "Мои тесты"
  */
-const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
+const TestsList = observer(({ onlyUserTest }: TestsListProps): React.ReactElement => {
   const [testsList, setTestsList] = useState<ITest[]>([]);
   const [currentPage, setCurrentPage] = useState<number>();
   const [pageCount, setPageCount] = useState<number>(0);
   const [search, setSearch] = useState<string>();
   const [categoryList, setCategoryList] = useState<ITestCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<ITestCategory>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     TestsService.getCategoriesList().then(res => {
@@ -48,7 +48,11 @@ const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
   }, [currentPage, search, selectedCategory]);
 
   useEffect(() => {
-    TestsService.getTestsList(currentPage, search, selectedCategory?.id).then(res => {
+    TestsService.getTestsList(currentPage, {
+      search,
+      categoryId: selectedCategory?.id,
+      author: onlyUserTest ? UsersStore.user?.id : undefined,
+    }).then(res => {
       setPageCount(Math.ceil((res?.count || 0) / PAGE_RANGE));
       setTestsList(res.results);
     });
@@ -61,7 +65,7 @@ const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
       <HeaderMenu />
       <Box sx={{ padding: "0 360px" }}>
         <Typography sx={{ fontWeight: 600, fontSize: "30px", color: "#5E5C74", paddingTop: "20px" }}>
-          Тесты онлайн
+          {onlyUserTest ? "Мои тесты" : "Тесты онлайн"}
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Input
@@ -84,49 +88,7 @@ const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
           {testsList?.map(test => {
             return (
               <Grid item xs={6} key={test.id}>
-                <Box
-                  sx={{
-                    borderRadius: "10px",
-                    cursor: "pointer",
-                    display: "flex",
-                    padding: "10px",
-                    background: "white",
-                    gap: "30px",
-                    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-                    transition: "0.3s",
-                    position: "relative",
-                    marginTop: "30px",
-
-                    "&:hover": {
-                      boxShadow: "3px 6px 9px rgba(0, 0, 0, 0.15)",
-                    },
-                  }}
-                  onClick={(): void => {
-                    setSelectedTest(test);
-                    TestsStore.selectedTest = test;
-                    navigate("/preview/");
-                  }}
-                >
-                  <img
-                    style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "50%" }}
-                    src={test.img || noImage}
-                    alt={test.title}
-                  />
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography>{test.title}</Typography>
-                    <Typography
-                      sx={{
-                        position: "absolute",
-                        bottom: "5px",
-                        right: "20px",
-                        fontSize: "12px",
-                        color: "gray",
-                      }}
-                    >
-                      Автор: {test.author.username}
-                    </Typography>
-                  </Box>
-                </Box>
+                <TestCard test={test} />
               </Grid>
             );
           })}
@@ -150,4 +112,4 @@ const Home = observer(({ setSelectedTest }: HomeProps): React.ReactElement => {
   );
 });
 
-export default Home;
+export default TestsList;

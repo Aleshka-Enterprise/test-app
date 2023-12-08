@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Autorization from "./views/autorization/Autorization";
 import UsersService from "./services/users/users.service";
-import Home from "./views/home/Home";
+import Home from "./views/tests-list/TestsList";
 import TestPreview from "./views/test-preview/TestPreview";
-import { ITest } from "./models/tests/tests";
 import { observer } from "mobx-react";
 import UsersStore from "./store/UsersStore";
 import Test from "./views/test/Test";
 import TestResult from "./views/test-result/TestResult";
 import Registration from "./views/registration/Registration";
 import Profile from "./views/profile/Profile";
-import ErrorModal from "./components/ErrorModal/ErrorModal";
+import ErrorModal from "./components/error-modal/ErrorModal";
+import TestsStore from "./store/TestsStore";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 const App = observer((): React.ReactElement => {
-  const [selectedTest, setSelectedTest] = useState<ITest>();
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -30,15 +29,26 @@ const App = observer((): React.ReactElement => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Navigate to='home' replace />} />
-          <Route path='home' element={<Home setSelectedTest={setSelectedTest} />} />
+          <Route path='home' element={<Home />} />
           <Route path='autorization' element={<Autorization />} />
           <Route path='registration' element={<Registration />} />
-          {selectedTest && <Route path='preview' element={<TestPreview />} />}
-          {selectedTest && UsersStore.user && <Route path='test' element={<Test />} />}
-          {UsersStore.user && <Route path='profile' element={<Profile />} />}
-          {selectedTest && UsersStore.user && (
-            <Route path='result' element={<TestResult selectedTest={selectedTest} />} />
-          )}
+          <Route
+            path='preview'
+            element={<ProtectedRoute element={<TestPreview />} params={[TestsStore.selectedTest]} />}
+          />
+          <Route
+            path='test'
+            element={<ProtectedRoute element={<Test />} params={[TestsStore.selectedTest, UsersStore.user]} />}
+          />
+          <Route path='profile' element={<ProtectedRoute element={<Profile />} params={[UsersStore.user]} />} />
+          <Route
+            path='users_tests'
+            element={<ProtectedRoute element={<Home onlyUserTest={true} />} params={[UsersStore.user]} />}
+          />
+          <Route
+            path='result'
+            element={<ProtectedRoute element={<TestResult />} params={[TestsStore.selectedTest, UsersStore.user]} />}
+          />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       </BrowserRouter>

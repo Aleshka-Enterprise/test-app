@@ -9,8 +9,8 @@ class TestsService extends CommonService {
   /**
    * Получить список тестов
    */
-  getTestsList(page = 1, search?: string, categoryId?: number): Promise<IPage<ITest>> {
-    return axios.get<IPage<ITest>>(`${this.url}/`, { params: { page, search, category_id: categoryId } }).then(
+  getTestsList(page = 1, params: { search?: string; categoryId?: number; author?: number }): Promise<IPage<ITest>> {
+    return axios.get<IPage<ITest>>(`${this.url}/`, { params: { ...params, page } }).then(
       response => {
         return response.data;
       },

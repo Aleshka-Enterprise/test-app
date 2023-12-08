@@ -8,16 +8,14 @@ import TestsStore from "../../store/TestsStore";
 import { useNavigate } from "react-router-dom";
 import HeaderMenu from "../../components/header/HeaderMenu";
 
-interface TestResultProps {
-  selectedTest: ITest;
-}
-
 /**
  * Страница с результатом теста
  */
-const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElement => {
+const TestResult = observer((): React.ReactElement => {
   const [result, setResult] = useState<ITestResult[]>([]);
   const navigate = useNavigate();
+
+  const selectedTest = TestsStore.selectedTest as ITest;
 
   useEffect(() => {
     TestsService.getTestResult(selectedTest.id).then(results => {
@@ -27,7 +25,7 @@ const TestResult = observer(({ selectedTest }: TestResultProps): React.ReactElem
       }
       setResult(results);
     });
-  }, [selectedTest]);
+  }, [TestsStore.selectedTest]);
 
   const answers = result.map((res, index) => {
     const getAnswerText = (id: number): string | undefined => {
