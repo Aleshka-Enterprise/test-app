@@ -1,6 +1,6 @@
 import { CommonService } from "../common.service";
 import axios from "axios";
-import { ITest, ITestCategory, ITestResult, IUserAnswer } from "../../models/tests/tests";
+import { ITest, ITestCategory, ITestEdit, ITestResult, IUserAnswer } from "../../models/tests/tests";
 import { IPage } from "../../models/common";
 
 class TestsService extends CommonService {
@@ -75,6 +75,23 @@ class TestsService extends CommonService {
    */
   deleteTestResult(testId: number): Promise<{ message: string }> {
     return axios.delete<{ message: string }>(`${this.url}/result/${testId}/`).then(
+      response => response.data,
+      reason => Promise.reject(reason)
+    );
+  }
+
+  /**
+   * Изменяет тест
+   */
+  editTest(test: ITestEdit): Promise<ITestEdit> {
+    return axios.put<ITestEdit>(`${this.url}/${test.id}/`, test).then(
+      response => response.data,
+      reason => Promise.reject(reason)
+    );
+  }
+
+  editImg(img: File, id: number): Promise<ITestEdit> {
+    return axios.patch<ITestEdit>(`${this.url}/${id}/`, { img }).then(
       response => response.data,
       reason => Promise.reject(reason)
     );

@@ -43,3 +43,12 @@ export interface ITestResult {
   question: IQuestion;
   selectedAnswer: number;
 }
+
+export interface ITestEdit {
+  description?: string;
+  id: number;
+  title: string;
+  img?: string;
+  author: number;
+  category: number;
+}

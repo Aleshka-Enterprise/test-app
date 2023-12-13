@@ -11,6 +11,8 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    title = serializers.CharField(read_only=True)
+
     class Meta:
         model = Category
         fields = ['id', 'title']
@@ -52,7 +54,7 @@ class UserAnswerSerializer(serializers.ModelSerializer):
 
 class TestDetailSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
-    category = CategorySerializer()
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
 
     class Meta:
         model = Test
