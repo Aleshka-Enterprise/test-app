@@ -90,11 +90,13 @@ class TestsService extends CommonService {
     );
   }
 
-  editImg(img: File, id: number): Promise<ITestEdit> {
-    return axios.patch<ITestEdit>(`${this.url}/${id}/`, { img }).then(
-      response => response.data,
-      reason => Promise.reject(reason)
-    );
+  editImg(img: File, id: number): Promise<ITest> {
+    return axios
+      .patch<ITest>(`${this.url}/${id}/`, { img }, { headers: { "Content-Type": "multipart/form-data" } })
+      .then(
+        response => response.data,
+        reason => Promise.reject(reason)
+      );
   }
 }
 

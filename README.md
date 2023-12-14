@@ -16,12 +16,12 @@ npm start
 ```
 pip install -r requirements.txt
 ```
-### Произвести миграции
+- Произвести миграции
 ```
 python manage.py migrate
 ```
-### Отредактировать .env
-### Запуск сервера
+- Отредактировать файл .env
+- Запуск сервера
 ```
 python manage.py runserver
 ```

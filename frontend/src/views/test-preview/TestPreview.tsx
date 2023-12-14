@@ -31,14 +31,18 @@ const TestPreview = observer((): React.ReactElement => {
   };
 
   const handleImageClick = (): void => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.onchange = (event): void => {
-      const file = (event.target as HTMLInputElement)?.files?.[0];
-      TestsService.editImg(file!, selectedTest.id);
-    };
-    input.click();
+    if (editable) {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.onchange = (event): void => {
+        const file = (event.target as HTMLInputElement)?.files?.[0];
+        TestsService.editImg(file!, selectedTest.id).then(res => {
+          TestsStore.selectedTest = res;
+        });
+      };
+      input.click();
+    }
   };
 
   return (
