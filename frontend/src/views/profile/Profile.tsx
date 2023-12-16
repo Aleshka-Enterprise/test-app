@@ -9,6 +9,11 @@ import * as yup from "yup";
 import { REQUIRED_FIELD_ERROR } from "../../utils/utils";
 import FieldInput from "../../components/field-input/FieldInput";
 import { buttonMixin } from "../../utils/styles";
+import StyledImage from "../../components/styled-image/StyledImage";
+import NoImage from "../../assets/images/no-image.png";
+import { AxiosError } from "axios";
+import { IError } from "../../models/common";
+import ModalWindowsStore from "../../store/ModalWindowsStore";
 
 const userSchema = yup.object({
   username: yup.string().required(REQUIRED_FIELD_ERROR),
@@ -19,18 +24,46 @@ const userSchema = yup.object({
  */
 const Profile = observer((): React.ReactElement => {
   const currentUser = UsersStore.user;
+
   const formik = useFormik({
     initialValues: {
-      username: currentUser?.username,
+      username: currentUser?.username || "",
       email: currentUser?.email,
       firstName: currentUser?.firstName,
       lastName: currentUser?.lastName,
     },
     onSubmit: (values): void => {
-      // UsersService.
+      UsersService.userEdit({ ...values })
+        .then(res => {
+          UsersStore.user = res;
+          ModalWindowsStore.successMessage = "Данные успешно сохранены";
+        })
+        .catch((error: AxiosError<IError>) => {
+          if (error.response?.data?.errorMessage) {
+            ModalWindowsStore.errorMessage = error.response.data.errorMessage;
+          }
+        })
+        .finally(() => {
+          formik.setSubmitting(false);
+        });
     },
     validationSchema: userSchema,
   });
+
+  const handleImageClick = (): void => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (event): void => {
+      const file = (event.target as HTMLInputElement)?.files?.[0];
+      if (file && currentUser?.id) {
+        UsersService.uploadUserImage(file).then(res => {
+          UsersStore.user = res;
+        });
+      }
+    };
+    input.click();
+  };
 
   return (
     <Box sx={{ height: "100vh" }}>
@@ -52,9 +85,10 @@ const Profile = observer((): React.ReactElement => {
               justifyContent: "center",
             }}
           >
-            <img
+            <StyledImage
               style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-              src={currentUser?.img ? UsersService.getImgUrl(currentUser?.img as string) : ""}
+              src={(currentUser?.img as string) || NoImage}
+              onClick={handleImageClick}
             />
           </Box>
           <FieldInput formik={formik} type={"text"} fieldName={"username"} placeholder={"Имя пользователя"} />
@@ -74,7 +108,11 @@ const Profile = observer((): React.ReactElement => {
               <FieldInput formik={formik} type={"text"} fieldName={"lastName"} placeholder={"Фамилия"} />
             </Grid>
           </Grid>
-          <Button sx={{ ...buttonMixin, width: "100%", marginTop: "20px" }} disabled={formik.isSubmitting}>
+          <Button
+            sx={{ ...buttonMixin, width: "100%", marginTop: "20px" }}
+            disabled={formik.isSubmitting}
+            onClick={formik.submitForm}
+          >
             Сохранить
           </Button>
         </Box>

@@ -11,7 +11,7 @@ from uuid import uuid4
 
 
 class User(AbstractUser):
-    img = models.ImageField(upload_to='user', blank=True, null=True)
+    img = models.ImageField(upload_to='user', blank=True)
     is_verified = models.BooleanField(default=False, verbose_name='Почта подтверждена')
 
     def __str__(self):

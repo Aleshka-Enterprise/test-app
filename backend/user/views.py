@@ -8,7 +8,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from user.models import EmailVerification
+from user.models import EmailVerification, User
 from user.serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -27,8 +27,40 @@ class CreateUserAPIView(CreateAPIView):
 @permission_classes([IsAuthenticated])
 def get_current_user(request):
     """ Возвращает текущего пользователя """
-    serializer = UserSerializer(request.user)
+    serializer = UserSerializer(request.user, context={'request': request})
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def upload_image(request):
+    """ Обновляет картинку у пользователя """
+    user = User.objects.get(id=request.user.id)
+    user.img = request.data.get('image')
+    user.save()
+    serializer = UserSerializer(request.user, context={'request': request})
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def user_edit(request):
+    """ Редактирование пользователя """
+    user = request.user
+    username = request.data.get('username')
+
+    if not username:
+        return Response({'errorMessage': 'Поле username не может быть пустым!'}, status=status.HTTP_400_BAD_REQUEST)
+    elif username != request.user.username and User.objects.filter(username=username).exists():
+        return Response({'errorMessage': 'Пользователь с таким же username уже зарегестрирован!'},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    user.username = username
+    user.first_name = request.data.get('first_name', '')
+    user.last_name = request.data.get('last_name', '')
+    user.save()
+    serializer = UserSerializer(request.user, context={'request': request})
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class LogoutAPIView(APIView):
@@ -52,6 +84,7 @@ class CustomAuthToken(ObtainAuthToken):
 
 
 class EmailVerificationView(TemplateView):
+    """ Верефикация пользователя через email """
     template_name = 'user/email_verification.html'
 
     def get(self, request, *args, **kwargs):

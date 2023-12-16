@@ -9,7 +9,7 @@ import TasksParticles from "../../components/particles/Particles";
 import { Box, Button, Typography } from "@mui/material";
 import { buttonMixin, linkMixin } from "../../utils/styles";
 import { AxiosError } from "axios";
-import ErrorsStore from "../../store/ErrorsStore";
+import ModalWindowsStore from "../../store/ModalWindowsStore";
 import { IError } from "../../models/common";
 
 const userSchema = yup.object({
@@ -43,12 +43,12 @@ const Registration = (): React.ReactElement => {
       } else {
         UsersService.registration(values)
           .then(() => {
-            ErrorsStore.errorMessage = " На вашу почту было выслано письмо для подтверждения.";
+            ModalWindowsStore.errorMessage = " На вашу почту было выслано письмо для подтверждения.";
             navigate("/autorization/");
           })
           .catch((error: AxiosError<IError>) => {
             if (error.response?.data?.errorMessage) {
-              ErrorsStore.errorMessage = error.response.data.errorMessage;
+              ModalWindowsStore.errorMessage = error.response.data.errorMessage;
             }
             formik.setSubmitting(false);
           });

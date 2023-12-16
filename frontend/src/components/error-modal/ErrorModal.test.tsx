@@ -1,7 +1,7 @@
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import ErrorModal from "./ErrorModal";
-import ErrorsStore from "../../store/ErrorsStore";
+import ModalWindowsStore from "../../store/ModalWindowsStore";
 
 describe("<ErrorModal />", () => {
   test("Компонент рендерится", async () => {
@@ -11,7 +11,7 @@ describe("<ErrorModal />", () => {
       expect(screen.queryByText("Тестовая ошибка")).not.toBeInTheDocument();
     });
 
-    ErrorsStore.errorMessage = "Тестовая ошибка";
+    ModalWindowsStore.errorMessage = "Тестовая ошибка";
 
     await waitFor(() => {
       expect(screen.getByText("Тестовая ошибка")).toBeInTheDocument();
@@ -19,7 +19,7 @@ describe("<ErrorModal />", () => {
   });
 
   test("Модальное окно закрывается", async () => {
-    ErrorsStore.errorMessage = "Тестовая ошибка";
+    ModalWindowsStore.errorMessage = "Тестовая ошибка";
     render(<ErrorModal />);
 
     await waitFor(() => {
@@ -32,7 +32,7 @@ describe("<ErrorModal />", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Тестовая ошибка")).not.toBeInTheDocument();
-      expect(ErrorsStore.errorMessage).toBe(undefined);
+      expect(ModalWindowsStore.errorMessage).toBe(undefined);
     });
   });
 });

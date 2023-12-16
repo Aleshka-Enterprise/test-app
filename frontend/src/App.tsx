@@ -13,6 +13,7 @@ import Profile from "./views/profile/Profile";
 import ErrorModal from "./components/error-modal/ErrorModal";
 import TestsStore from "./store/TestsStore";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import SuccessBox from "./components/success-box/SuccessBox";
 
 const App = observer((): React.ReactElement => {
   useEffect(() => {
@@ -53,6 +54,7 @@ const App = observer((): React.ReactElement => {
         </Routes>
       </BrowserRouter>
       <ErrorModal />
+      <SuccessBox />
     </>
   );
 });

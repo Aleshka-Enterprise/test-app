@@ -8,7 +8,7 @@ import UsersService from "../../services/users/users.service";
 import TasksParticles from "../../components/particles/Particles";
 import { Box, Button, Typography } from "@mui/material";
 import { buttonMixin, linkMixin } from "../../utils/styles";
-import ErrorsStore from "../../store/ErrorsStore";
+import ModalWindowsStore from "../../store/ModalWindowsStore";
 import { IError } from "../../models/common";
 import { AxiosError } from "axios";
 
@@ -36,7 +36,7 @@ const Autorization = (): React.ReactElement => {
         })
         .catch((error: AxiosError<IError>) => {
           if (error.response?.data?.errorMessage) {
-            ErrorsStore.errorMessage = error.response.data.errorMessage;
+            ModalWindowsStore.errorMessage = error.response.data.errorMessage;
           }
           formik.setSubmitting(false);
         });

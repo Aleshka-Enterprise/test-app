@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     is_superuser = serializers.BooleanField(read_only=True)
     is_staff = serializers.BooleanField(read_only=True)
-    img = serializers.ImageField(required=False)
+    img = serializers.SerializerMethodField()
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -19,6 +19,11 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         return user
+
+    def get_img(self, obj):
+        if obj.img:
+            return self.context['request'].build_absolute_uri(obj.img.url)
+        return None
 
     class Meta:
         model = User

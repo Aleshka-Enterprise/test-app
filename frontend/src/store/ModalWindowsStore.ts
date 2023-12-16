@@ -1,7 +1,8 @@
 import { makeAutoObservable } from "mobx";
 
-class ErrorsStore {
+class ModalWindowsStore {
   private _errorMessage?: string;
+  private _successMessage?: string;
 
   constructor() {
     makeAutoObservable(this);
@@ -14,6 +15,14 @@ class ErrorsStore {
   get errorMessage(): string | undefined {
     return this._errorMessage;
   }
+
+  set successMessage(value: string | undefined) {
+    this._successMessage = value;
+  }
+
+  get successMessage(): string | undefined {
+    return this._successMessage;
+  }
 }
 
-export default new ErrorsStore();
+export default new ModalWindowsStore();

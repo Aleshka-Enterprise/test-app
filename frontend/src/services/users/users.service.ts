@@ -79,9 +79,27 @@ class UsersService extends CommonService {
     );
   }
 
-  // TODO Убрать браг на бэке.
-  getImgUrl(url: string): string {
-    return `${this.baseURL}/${url}`;
+  /**
+   * Обновление аватара польователя
+   * @param image изображение
+   */
+  uploadUserImage(image: File): Promise<IUser> {
+    return axios
+      .post<IUser>(`${this.url}/upload-image/`, { image }, { headers: { "Content-Type": "multipart/form-data" } })
+      .then(
+        response => response.data,
+        reason => Promise.reject(reason)
+      );
+  }
+
+  /**
+   * Редакирование пользователя
+   */
+  userEdit(data: { firstName?: string; lastName?: string; username: string }): Promise<IUser> {
+    return axios.put<IUser>(`${this.url}/user-edit/`, data).then(
+      response => response.data,
+      reason => Promise.reject(reason)
+    );
   }
 }
 
