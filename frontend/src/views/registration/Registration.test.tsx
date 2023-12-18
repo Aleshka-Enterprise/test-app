@@ -8,7 +8,6 @@ import { REQUIRED_FIELD_ERROR } from "../../utils/utils";
 
 const user: IUser = {
   username: "user_name",
-  password: "password",
   firstName: "first_name",
   lastName: "last_name",
   email: "email@emai.com",

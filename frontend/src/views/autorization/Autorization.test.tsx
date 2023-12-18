@@ -7,7 +7,6 @@ import { Router, Navigator } from "react-router";
 
 const user: IUser = {
   username: "user_name",
-  password: "password",
   firstName: "first_name",
   lastName: "last_name",
   email: "email@emai.com",

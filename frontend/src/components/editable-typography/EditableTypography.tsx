@@ -32,6 +32,7 @@ const EditableTypography = ({ onChange, value, canChange, sx = {} }: EditableTyp
           value={text}
           onChange={handleChange}
           onBlur={handleBlur}
+          data-testid={"input"}
           minRows={1}
           style={{
             width: "100%",
@@ -43,7 +44,9 @@ const EditableTypography = ({ onChange, value, canChange, sx = {} }: EditableTyp
           }}
         />
       ) : (
-        <Typography sx={{ userSelect: "none", ...sx }}>{text}</Typography>
+        <Typography data-testid={"text"} sx={{ userSelect: "none", ...sx }}>
+          {text}
+        </Typography>
       )}
     </Box>
   );

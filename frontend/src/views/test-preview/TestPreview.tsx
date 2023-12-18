@@ -62,6 +62,20 @@ const TestPreview = observer((): React.ReactElement => {
           editable={editable}
           onClick={handleImageClick}
         />
+        <Typography
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+            color: "white",
+            fontSize: "18px",
+            fontWeight: 400,
+            margin: "15px 0 10px 0",
+            textAlign: "center",
+          }}
+        >
+          {selectedTest.category.title}
+        </Typography>
         <EditableTypography
           onChange={(value: string): void => updateTest("title", value)}
           value={selectedTest.title}
@@ -69,7 +83,6 @@ const TestPreview = observer((): React.ReactElement => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            marginTop: "20px",
             color: "white",
             fontSize: "32px",
             fontWeight: 400,

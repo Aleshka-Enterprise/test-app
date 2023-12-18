@@ -5,12 +5,13 @@ import TestsStore from "../../store/TestsStore";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
 import noImage from "../../assets/images/no-image.png";
+import StyledImage from "../styled-image/StyledImage";
 
-interface ITestCard {
+interface TestCardProps {
   test: ITest;
 }
 
-const TestCard = observer(({ test }: ITestCard): React.ReactElement => {
+const TestCard = observer(({ test }: TestCardProps): React.ReactElement => {
   const navigate = useNavigate();
 
   return (
@@ -36,12 +37,23 @@ const TestCard = observer(({ test }: ITestCard): React.ReactElement => {
         navigate("/preview/");
       }}
     >
-      <img
-        style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "50%" }}
+      <StyledImage
+        style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "50%", display: "block", margin: 0 }}
         src={test.img || noImage}
         alt={test.title}
       />
       <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography
+          sx={{
+            position: "absolute",
+            top: "5px",
+            right: "20px",
+            fontSize: "12px",
+            color: "gray",
+          }}
+        >
+          {test.category.title}
+        </Typography>
         <Typography>{test.title}</Typography>
         <Typography
           sx={{

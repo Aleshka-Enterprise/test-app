@@ -50,6 +50,6 @@ describe("<TestCard />", () => {
 
   it("Страница рендерится", () => {
     expect(screen.getByText(selectedTest.title)).toBeInTheDocument();
-    expect(screen.getByText(selectedTest.description as string)).toBeInTheDocument();
+    expect(screen.getByText("Автор: author")).toBeInTheDocument();
   });
 });

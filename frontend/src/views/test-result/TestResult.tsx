@@ -105,7 +105,9 @@ const TestResult = observer((): React.ReactElement => {
         <Typography>
           Правильных ответов: {numberOfCorrectAnswers} из {result.length}
         </Typography>
-        <Typography>Процент правильных ответов: {(numberOfCorrectAnswers / result.length) * 100}%</Typography>
+        <Typography>
+          Процент правильных ответов: {((numberOfCorrectAnswers / result.length) * 100).toFixed(2)}%
+        </Typography>
         <Box sx={{ marginTop: "20px" }}>
           {answers.map(answer => {
             return (

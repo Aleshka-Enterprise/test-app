@@ -4,7 +4,6 @@ export interface IToken {
 
 export interface IUser {
   username: string;
-  password: string;
   firstName: string;
   lastName: string;
   email: string;

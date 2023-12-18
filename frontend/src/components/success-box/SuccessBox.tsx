@@ -41,7 +41,11 @@ const SuccessBox = observer((): React.ReactElement => {
         }}
       >
         <Typography sx={{ display: "flex", alignItems: "center" }}>Успех</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={closeModal}>
+        <Box
+          sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          data-testid={"close"}
+          onClick={closeModal}
+        >
           <i className='fa fa-times' aria-hidden='true'></i>
         </Box>
       </Box>
