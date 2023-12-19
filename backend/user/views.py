@@ -115,5 +115,3 @@ class EmailVerificationView(TemplateView):
                 'title': 'Что-то пошло не так!',
                 'message': 'Пользователь не найден',
             }
-
-
