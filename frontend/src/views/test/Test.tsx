@@ -8,10 +8,14 @@ import { buttonMixin } from "../../utils/styles";
 import { useNavigate } from "react-router-dom";
 import TestsStore from "../../store/TestsStore";
 
+interface TestProps {
+  mode?: "edit" | "read";
+}
+
 /**
  * Страница для прохождения теста
  */
-const Test = observer((): React.ReactElement => {
+const Test = observer(({ mode }: TestProps): React.ReactElement => {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [index, setIndex] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Omit<IUserAnswer, "id">[]>([]);
@@ -31,16 +35,16 @@ const Test = observer((): React.ReactElement => {
   }, []);
 
   const onAnswerSelect = (question: number, selectedAnswer: number): void => {
-    const anser: Omit<IUserAnswer, "id"> = {
+    const answer: Omit<IUserAnswer, "id"> = {
       question,
       selectedAnswer,
       user: UserStore.user?.id as number,
       test: TestsStore.selectedTest?.id as number,
     };
     if (selectedAnswers.find(answer => answer.question === question)) {
-      setSelectedAnswers(selectedAnswers.map(el => (el.question !== anser.question ? el : anser)));
+      setSelectedAnswers(selectedAnswers.map(el => (el.question !== answer.question ? el : answer)));
     } else {
-      setSelectedAnswers([...selectedAnswers, anser]);
+      setSelectedAnswers([...selectedAnswers, answer]);
     }
   };
 
@@ -82,7 +86,7 @@ const Test = observer((): React.ReactElement => {
                 <Checkbox
                   sx={{ path: { color: "white" } }}
                   checked={
-                    el.id === selectedAnswers.find(anser => anser.question === questions[index].id)?.selectedAnswer
+                    el.id === selectedAnswers.find(answer => answer.question === questions[index].id)?.selectedAnswer
                   }
                 />
                 <Box sx={{ marginLeft: "20px" }}>{el.answerText}</Box>

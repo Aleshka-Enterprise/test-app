@@ -51,4 +51,4 @@ def user_post_save(sender, instance, signal, *args, **kwargs):
         )
 
 
-signals.post_save.connect(user_post_save, sender=User)
+# signals.post_save.connect(user_post_save, sender=User)
