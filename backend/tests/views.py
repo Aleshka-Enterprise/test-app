@@ -25,12 +25,14 @@ class TestViewSet(viewsets.ModelViewSet):
             return super(TestViewSet, self).get_queryset()
         else:
             queryset = (Test.objects.select_related('author', 'category')
-                        .filter(title__contains=self.request.query_params.get('search', ''), is_published=True)
+                        .filter(title__contains=self.request.query_params.get('search', ''))
                         .order_by('date_of_creation'))
             if self.request.query_params.get('categoryId'):
                 queryset = queryset.filter(category_id=self.request.query_params.get('categoryId'))
             if self.request.query_params.get('author'):
                 queryset = queryset.filter(author_id=self.request.query_params.get('author'))
+            if not self.request.query_params.get('published'):
+                queryset = queryset.filter(is_published=True)
             return queryset
 
     def get_serializer_class(self):

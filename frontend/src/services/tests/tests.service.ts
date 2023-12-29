@@ -9,7 +9,10 @@ class TestsService extends CommonService {
   /**
    * Получить список тестов
    */
-  getTestsList(page = 1, params: { search?: string; categoryId?: number; author?: number }): Promise<IPage<ITest>> {
+  getTestsList(
+    page = 1,
+    params: { search?: string; categoryId?: number; author?: number; published?: boolean }
+  ): Promise<IPage<ITest>> {
     return axios.get<IPage<ITest>>(`${this.url}/`, { params: { ...params, page } }).then(
       response => {
         return response.data;
@@ -90,6 +93,9 @@ class TestsService extends CommonService {
     );
   }
 
+  /**
+   * Изменяет картинку у теста
+   */
   editImg(img: File, id: number): Promise<ITest> {
     return axios
       .patch<ITest>(`${this.url}/${id}/`, { img }, { headers: { "Content-Type": "multipart/form-data" } })
@@ -97,6 +103,16 @@ class TestsService extends CommonService {
         response => response.data,
         reason => Promise.reject(reason)
       );
+  }
+
+  /**
+   * Создаёт тест
+   */
+  createTest(test: { title: string; description: string; author: number; category: number }): Promise<ITest> {
+    return axios.post<ITest>(`${this.url}/`, test).then(
+      response => response.data,
+      reason => Promise.reject(reason)
+    );
   }
 }
 

@@ -50,6 +50,7 @@ const App = observer((): React.ReactElement => {
             path='result'
             element={<ProtectedRoute element={<TestResult />} params={[TestsStore.selectedTest, UsersStore.user]} />}
           />
+          <Route path='create-test' element={<ProtectedRoute element={<TestPreview />} params={[UsersStore.user]} />} />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       </BrowserRouter>

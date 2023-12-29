@@ -10,6 +10,10 @@ import TestsStore from "../../store/TestsStore";
 import HeaderMenu from "../../components/header/HeaderMenu";
 import UsersStore from "../../store/UsersStore";
 import TestCard from "../../components/test-card/TestCard";
+import StyledImage from "../../components/styled-image/StyledImage";
+import CreateImg from "../../assets/images/create.png";
+import { cardMixin } from "../../utils/styles";
+import { useNavigate } from "react-router-dom";
 
 const PAGE_RANGE = 10;
 
@@ -28,6 +32,8 @@ const TestsList = observer(({ onlyUserTest }: TestsListProps): React.ReactElemen
   const [search, setSearch] = useState<string>();
   const [categoryList, setCategoryList] = useState<ITestCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<ITestCategory>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     TestsService.getCategoriesList().then(res => {
@@ -52,11 +58,46 @@ const TestsList = observer(({ onlyUserTest }: TestsListProps): React.ReactElemen
       search,
       categoryId: selectedCategory?.id,
       author: onlyUserTest ? UsersStore.user?.id : undefined,
+      published: onlyUserTest,
     }).then(res => {
       setPageCount(Math.ceil((res?.count || 0) / PAGE_RANGE));
       setTestsList(res.results);
     });
   }, [currentPage, search, selectedCategory]);
+
+  const cardCreateTest = (): React.ReactElement => {
+    return (
+      <Box
+        sx={cardMixin}
+        onClick={(): void => {
+          TestsService.createTest({
+            title: "Новый тест",
+            description: "Введите описание теста",
+            author: UsersStore.user?.id as number,
+            category: categoryList?.[1].id,
+          }).then(res => {
+            TestsStore.selectedTest = res;
+            navigate("/create-test/");
+          });
+        }}
+      >
+        <StyledImage
+          style={{
+            width: "80px",
+            height: "80px",
+            objectFit: "cover",
+            borderRadius: "50%",
+            display: "block",
+            margin: 0,
+          }}
+          src={CreateImg}
+        />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography>Создать новый тест</Typography>
+        </Box>
+      </Box>
+    );
+  };
 
   const debounceSearch = debounce(setSearch, 500);
 
@@ -85,6 +126,11 @@ const TestsList = observer(({ onlyUserTest }: TestsListProps): React.ReactElemen
           />
         </Box>
         <Grid container columnSpacing={4}>
+          {onlyUserTest && (
+            <Grid item xs={6}>
+              {cardCreateTest()}
+            </Grid>
+          )}
           {testsList?.map(test => {
             return (
               <Grid item xs={6} key={test.id}>

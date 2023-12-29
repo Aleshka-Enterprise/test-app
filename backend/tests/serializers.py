@@ -55,6 +55,7 @@ class UserAnswerSerializer(serializers.ModelSerializer):
 class TestDetailSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+    title = serializers.CharField(max_length=128, validators=[])
 
     class Meta:
         model = Test

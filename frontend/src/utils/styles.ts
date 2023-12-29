@@ -29,3 +29,20 @@ export const linkMixin: SxProps = {
     color: "purple",
   },
 };
+
+export const cardMixin: SxProps = {
+  borderRadius: "10px",
+  cursor: "pointer",
+  display: "flex",
+  padding: "10px",
+  background: "white",
+  gap: "30px",
+  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+  transition: "0.3s",
+  position: "relative",
+  marginTop: "30px",
+
+  "&:hover": {
+    boxShadow: "3px 6px 9px rgba(0, 0, 0, 0.15)",
+  },
+};
