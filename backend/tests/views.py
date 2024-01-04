@@ -1,16 +1,19 @@
-from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import status, viewsets
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Test, Category, UserAnswer
-from .serializers import TestDetailSerializer, TestListSerializer, CategorySerializer, UserAnswerSerializer, \
-    TestResultSerializer
+from .models import Answer, Category, Question, Test, UserAnswer
+from .serializers import (CategorySerializer, QuestionSerializer,
+                          TestDetailSerializer, TestListSerializer,
+                          TestResultSerializer, UserAnswerSerializer)
 
 
 class TestViewSetPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 9
 
 
 class TestViewSet(viewsets.ModelViewSet):
@@ -82,3 +85,38 @@ class TestResultAPIView(APIView):
         """Удаление результатов тестирования"""
         UserAnswer.objects.filter(user_id=self.request.user.id, test_id=kwargs['test_id']).delete()
         return Response({'message': 'Ресурс успешно удален'})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_new_question(request, test_id):
+    """ Создаёт новый вопрос в тесте """
+    question_text = request.data.get('question')
+    options = request.data.get('options')
+    right_answer_text = request.data.get('right_answer')
+
+    if right_answer_text not in options:
+        return Response({'error': 'Правельного ответа нет среди вариантов ответа'}, status=status.HTTP_404_NOT_FOUND)
+
+    test = get_object_or_404(Test, id=test_id)
+
+    question = Question.objects.create(test=test, question=question_text)
+
+    answer_objects = []
+    new_options = []
+
+    for option_text in options:
+        option, created = Answer.objects.get_or_create(answer_text=option_text)
+        answer_objects.append(option)
+        if created:
+            new_options.append(option)
+
+    Answer.objects.bulk_create(new_options)
+
+    right_answer, created = Answer.objects.get_or_create(answer_text=right_answer_text)
+    question.right_answer = right_answer
+
+    question.answer_options.set(answer_objects)
+
+    serializer = QuestionSerializer(question)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)

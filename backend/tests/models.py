@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.text import slugify
 
 from user.models import User
 
@@ -70,7 +69,13 @@ class Question(models.Model):
     img = models.ImageField(upload_to='question_img', verbose_name='Изображение', blank=True)
     question = models.TextField(verbose_name='Вопрос')
     answer_options = models.ManyToManyField(to=Answer, related_name='questions')
-    right_answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE, verbose_name='Правильный ответ')
+    right_answer = models.ForeignKey(
+        to=Answer,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='Правильный ответ'
+    )
 
     class Meta:
         verbose_name = 'Вопрос'

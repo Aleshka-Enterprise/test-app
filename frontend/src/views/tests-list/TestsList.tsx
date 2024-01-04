@@ -59,6 +59,7 @@ const TestsList = observer(({ onlyUserTest }: TestsListProps): React.ReactElemen
       categoryId: selectedCategory?.id,
       author: onlyUserTest ? UsersStore.user?.id : undefined,
       published: onlyUserTest,
+      pageSize: onlyUserTest ? PAGE_RANGE - 1 : PAGE_RANGE,
     }).then(res => {
       setPageCount(Math.ceil((res?.count || 0) / PAGE_RANGE));
       setTestsList(res.results);
@@ -75,8 +76,14 @@ const TestsList = observer(({ onlyUserTest }: TestsListProps): React.ReactElemen
             description: "Введите описание теста",
             author: UsersStore.user?.id as number,
             category: categoryList?.[1].id,
-          }).then(res => {
+          }).then((res): void => {
             TestsStore.selectedTest = res;
+            TestsService.createQuestion(
+              res.id,
+              "Введите вопрос",
+              ["Ответ 1", "Ответ 2", "Ответ 3", "Ответ 4"],
+              "Ответ 1"
+            );
             navigate("/create-test/");
           });
         }}

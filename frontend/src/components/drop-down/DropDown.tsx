@@ -4,7 +4,7 @@ import { Box, Button, Menu, MenuItem } from "@mui/material";
 interface DropDownProps {
   options: { title: string; id: number }[];
   name: string;
-  onOptionSelect: (valye?: { title: string; id: number }) => void;
+  onOptionSelect: (value?: { title: string; id: number }) => void;
   selectedOptionId?: number;
 }
 

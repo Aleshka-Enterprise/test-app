@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
+
 from user.models import User
 
 
@@ -43,7 +44,10 @@ class UserTests(TestCase):
         self.assertIn('token', response.data)
 
     def test_email_verification_view(self):
-        url = reverse('email_verification', kwargs={'user_id': self.user.id, 'uuid': 'd29e9b42-9b97-ab6f-bc0c-2c3f938d10e4'})
+        url = reverse(
+            'email_verification',
+            kwargs={'user_id': self.user.id, 'uuid': 'd29e9b42-9b97-ab6f-bc0c-2c3f938d10e4'}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.context['title'], 'Что-то пошло не так!')

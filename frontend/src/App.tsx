@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Autorization from "./views/autorization/Autorization";
+import Authorization from "./views/authorization/Authorization";
 import UsersService from "./services/users/users.service";
 import Home from "./views/tests-list/TestsList";
 import TestPreview from "./views/test-preview/TestPreview";
@@ -31,7 +31,7 @@ const App = observer((): React.ReactElement => {
         <Routes>
           <Route path='/' element={<Navigate to='home' replace />} />
           <Route path='home' element={<Home />} />
-          <Route path='autorization' element={<Autorization />} />
+          <Route path='authorization' element={<Authorization />} />
           <Route path='registration' element={<Registration />} />
           <Route
             path='preview'
@@ -51,6 +51,15 @@ const App = observer((): React.ReactElement => {
             element={<ProtectedRoute element={<TestResult />} params={[TestsStore.selectedTest, UsersStore.user]} />}
           />
           <Route path='create-test' element={<ProtectedRoute element={<TestPreview />} params={[UsersStore.user]} />} />
+          <Route
+            path='edit-test'
+            element={
+              <ProtectedRoute
+                element={<Test mode={"edit"} />}
+                params={[UsersStore.user, TestsStore.selectedTest?.author.id === UsersStore.user?.id]}
+              />
+            }
+          />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       </BrowserRouter>

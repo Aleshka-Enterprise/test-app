@@ -17,7 +17,7 @@ const elemMixin = {
   },
 };
 
-const menuOptionMixim = {
+const menuOptionMixin = {
   cursor: "pointer",
   padding: "5px",
   "&:hover": { color: "white" },
@@ -39,18 +39,18 @@ const HeaderMenu = observer((): React.ReactElement => {
           top: "20px",
         }}
       >
-        <Typography sx={menuOptionMixim} onClick={(): void => navigate("/profile/", { replace: true })}>
+        <Typography sx={menuOptionMixin} onClick={(): void => navigate("/profile/", { replace: true })}>
           Профиль
         </Typography>
-        <Typography sx={menuOptionMixim} onClick={(): void => navigate("/users_tests/", { replace: true })}>
+        <Typography sx={menuOptionMixin} onClick={(): void => navigate("/users_tests/", { replace: true })}>
           Мои тесты
         </Typography>
         {(UsersStore.user?.isStaff || UsersStore.user?.isSuperuser) && (
-          <Typography sx={menuOptionMixim}>Админ-панель</Typography>
+          <Typography sx={menuOptionMixin}>Админ-панель</Typography>
         )}
         <Box sx={{ borderBottom: "solid 1px gray" }} />
         <Typography
-          sx={menuOptionMixim}
+          sx={menuOptionMixin}
           onClick={(): void => {
             UsersService.logout().then(() => {
               navigate("/");
@@ -64,14 +64,14 @@ const HeaderMenu = observer((): React.ReactElement => {
   };
 
   return (
-    <Box sx={{ widt: "100%", background: "#343a40", height: "56px", px: "360px" }}>
+    <Box sx={{ background: "#343a40", height: "56px", px: "360px" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", height: "100%", alignItems: "center" }}>
         <Box sx={{ color: "white", fontSize: 24, cursor: "pointer" }} onClick={(): void => navigate("/")}>
           Test app
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", gap: "20px", color: "rgba(255,255,255,.5)" }}>
           {!UsersStore.user && (
-            <Box sx={elemMixin} className={"elem"} onClick={(): void => navigate("/autorization/")}>
+            <Box sx={elemMixin} className={"elem"} onClick={(): void => navigate("/authorization/")}>
               Войти
               <i className='fa fa-sign-in' aria-hidden='true'></i>
             </Box>

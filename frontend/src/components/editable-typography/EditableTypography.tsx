@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Box, SxProps, TextareaAutosize } from "@mui/material";
 
 interface EditableTypographyProps {
@@ -11,6 +11,10 @@ interface EditableTypographyProps {
 const EditableTypography = ({ onChange, value, canChange, sx = {} }: EditableTypographyProps): React.ReactElement => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(value);
+
+  useEffect(() => {
+    setText(value);
+  }, [value]);
 
   const handleDoubleClick = (): void => {
     canChange && setEditing(true);

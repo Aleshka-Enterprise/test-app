@@ -4,17 +4,17 @@ import { IToken, IUser } from "../../models/users/users";
 import { PartialBy, logout } from "../../utils/utils";
 import UsersStore from "../../store/UsersStore";
 
-type IUserRegisteration = PartialBy<IUser, "id">;
+type IUserRegistration = PartialBy<IUser, "id">;
 
 class UsersService extends CommonService {
   protected url = `${this.baseURL}/api/user`;
 
   /**
-   * Авторизация. После авторизации заносит токин пользователя в localStorage
+   * Авторизация. После авторизации заносит токен пользователя в localStorage
    * @returns Token
    */
-  autorization(data: { username: string; password: string }): Promise<IToken> {
-    return axios.post<IToken>(`${this.url}/autorization/`, data).then(
+  authorization(data: { username: string; password: string }): Promise<IToken> {
+    return axios.post<IToken>(`${this.url}/authorization/`, data).then(
       response => {
         const { token } = response.data;
         localStorage.setItem("token", token);
@@ -59,8 +59,8 @@ class UsersService extends CommonService {
   /**
    * Регистрация пользователя
    */
-  registration(data: IUserRegisteration): Promise<IUserRegisteration> {
-    return axios.post<IUserRegisteration>(`${this.url}/registration/`, data).then(
+  registration(data: IUserRegistration): Promise<IUserRegistration> {
+    return axios.post<IUserRegistration>(`${this.url}/registration/`, data).then(
       response => {
         return response.data;
       },
@@ -69,7 +69,7 @@ class UsersService extends CommonService {
   }
 
   /**
-   * Получить поьзователя по id
+   * Получить пользователя по id
    * @param id пользователя
    */
   getUser(id: number): Promise<IUser> {
@@ -80,7 +80,7 @@ class UsersService extends CommonService {
   }
 
   /**
-   * Обновление аватара польователя
+   * Обновление аватара пользователя
    * @param image изображение
    */
   uploadUserImage(image: File): Promise<IUser> {
@@ -93,7 +93,7 @@ class UsersService extends CommonService {
   }
 
   /**
-   * Редакирование пользователя
+   * Редактирование пользователя
    */
   userEdit(data: { firstName?: string; lastName?: string; username: string }): Promise<IUser> {
     return axios.put<IUser>(`${this.url}/user-edit/`, data).then(

@@ -1,6 +1,6 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import Autorization from "./Autorization";
+import Authorization from "./Authorization";
 import UsersService from "../../services/users/users.service";
 import { IToken, IUser } from "../../models/users/users";
 import { Router, Navigator } from "react-router";
@@ -19,9 +19,9 @@ const token: IToken = {
 
 const mockedUsedNavigate = jest.fn();
 
-describe("<Autorization />", () => {
+describe("<Authorization />", () => {
   beforeEach(() => {
-    jest.spyOn(UsersService, "autorization").mockImplementationOnce(() => Promise.resolve(token));
+    jest.spyOn(UsersService, "authorization").mockImplementationOnce(() => Promise.resolve(token));
     jest.spyOn(UsersService, "getCurrentUser").mockImplementationOnce(() => Promise.resolve(user));
 
     jest.mock("react-router-dom", () => ({
@@ -31,7 +31,7 @@ describe("<Autorization />", () => {
 
     render(
       <Router location={""} navigator={undefined as unknown as Navigator}>
-        <Autorization />
+        <Authorization />
       </Router>
     );
   });
@@ -59,7 +59,7 @@ describe("<Autorization />", () => {
     fireEvent.click(screen.getByText("Авторизоваться"));
 
     expect(mockedUsedNavigate).not.toBeCalled();
-    expect(UsersService.autorization).not.toBeCalled();
+    expect(UsersService.authorization).not.toBeCalled();
     expect(UsersService.getCurrentUser).not.toBeCalled();
     expect(screen.getByPlaceholderText("Введите имя пользователя")).toHaveValue("Пользователь");
   });
@@ -72,7 +72,7 @@ describe("<Autorization />", () => {
     fireEvent.click(screen.getByText("Авторизоваться"));
 
     expect(mockedUsedNavigate).not.toBeCalled();
-    expect(UsersService.autorization).not.toBeCalled();
+    expect(UsersService.authorization).not.toBeCalled();
     expect(UsersService.getCurrentUser).not.toBeCalled();
     expect(screen.getByPlaceholderText("Введите пароль")).toHaveValue("password123");
   });

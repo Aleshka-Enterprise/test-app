@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ITest, ITestCategory } from "../models/tests/tests";
+import { IQuestion, ITest, ITestCategory } from "../models/tests/tests";
 
 class TestsStore {
   private _selectedTest?: ITest;
@@ -42,6 +42,12 @@ class TestsStore {
 
   get search(): string {
     return this._search;
+  }
+
+  updateQuestions(question: IQuestion): void {
+    if (this.selectedTest) {
+      this._selectedTest = { ...this.selectedTest, questions: [...(this.selectedTest?.questions || []), question] };
+    }
   }
 }
 

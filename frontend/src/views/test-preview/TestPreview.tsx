@@ -9,6 +9,7 @@ import UsersStore from "../../store/UsersStore";
 import EditableTypography from "../../components/editable-typography/EditableTypography";
 import TestsService from "../../services/tests/tests.service";
 import StyledImage from "../../components/styled-image/StyledImage";
+import DefaultIMG from "../../assets/images/no-image.png";
 
 /**
  * Предпросмотр выбранного теста
@@ -49,7 +50,7 @@ const TestPreview = observer((): React.ReactElement => {
     <Box sx={{ height: "100vh", background: "#5e5e73", padding: "0 450px" }}>
       <Box sx={{ paddingTop: "50px" }}>
         <StyledImage
-          src={selectedTest?.img}
+          src={selectedTest?.img || DefaultIMG}
           alt={selectedTest.title}
           style={{
             width: "200px",

@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from .models import Test, Category, Question, Answer, UserAnswer
 from user.models import User
+
+from .models import Answer, Category, Question, Test, UserAnswer
 
 
 class AuthorSerializer(serializers.ModelSerializer):

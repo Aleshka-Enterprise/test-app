@@ -20,7 +20,7 @@ const userSchema = yup.object({
 /**
  * Авторизация
  */
-const Autorization = (): React.ReactElement => {
+const Authorization = (): React.ReactElement => {
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -29,7 +29,7 @@ const Autorization = (): React.ReactElement => {
       password: "",
     },
     onSubmit: (values): void => {
-      UsersService.autorization(values)
+      UsersService.authorization(values)
         .then((): void => {
           navigate("/");
           UsersService.getCurrentUser();
@@ -93,4 +93,4 @@ const Autorization = (): React.ReactElement => {
   );
 };
 
-export default Autorization;
+export default Authorization;

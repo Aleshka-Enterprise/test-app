@@ -1,6 +1,6 @@
 import { CommonService } from "../common.service";
 import axios from "axios";
-import { ITest, ITestCategory, ITestEdit, ITestResult, IUserAnswer } from "../../models/tests/tests";
+import { IQuestion, ITest, ITestCategory, ITestEdit, ITestResult, IUserAnswer } from "../../models/tests/tests";
 import { IPage } from "../../models/common";
 
 class TestsService extends CommonService {
@@ -11,7 +11,7 @@ class TestsService extends CommonService {
    */
   getTestsList(
     page = 1,
-    params: { search?: string; categoryId?: number; author?: number; published?: boolean }
+    params: { search?: string; categoryId?: number; author?: number; published?: boolean; pageSize?: number }
   ): Promise<IPage<ITest>> {
     return axios.get<IPage<ITest>>(`${this.url}/`, { params: { ...params, page } }).then(
       response => {
@@ -113,6 +113,22 @@ class TestsService extends CommonService {
       response => response.data,
       reason => Promise.reject(reason)
     );
+  }
+
+  /**
+   * Создаёт вопрос
+   * @param testId id Теста
+   * @param question Текст вопроса
+   * @param options Варианты ответа
+   * @param rightAnswer Правильный ответ
+   */
+  createQuestion(testId: number, question: string, options: string[], rightAnswer: string): Promise<IQuestion> {
+    return axios
+      .post<IQuestion>(`${this.url}/create_new_question/${testId}/`, { question, options, right_answer: rightAnswer })
+      .then(
+        response => response.data,
+        reason => Promise.reject(reason)
+      );
   }
 }
 

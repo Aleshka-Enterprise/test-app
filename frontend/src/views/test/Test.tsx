@@ -7,6 +7,7 @@ import UserStore from "../../store/UsersStore";
 import { buttonMixin } from "../../utils/styles";
 import { useNavigate } from "react-router-dom";
 import TestsStore from "../../store/TestsStore";
+import EditableTypography from "../../components/editable-typography/EditableTypography";
 
 interface TestProps {
   mode?: "edit" | "read";
@@ -58,6 +59,20 @@ const Test = observer(({ mode }: TestProps): React.ReactElement => {
     });
   };
 
+  const createNewQuestion = (): void => {
+    if (TestsStore.selectedTest?.id) {
+      TestsService.createQuestion(
+        TestsStore.selectedTest?.id,
+        "Введите вопрос",
+        ["Ответ 1", "Ответ 2", "Ответ 3", "Ответ 4"],
+        "Ответ 1"
+      ).then(res => {
+        TestsStore.updateQuestions(res);
+        setIndex(TestsStore.selectedTest?.questions?.length || index);
+      });
+    }
+  };
+
   return (
     <Box sx={{ height: "100vh", background: "#5e5e73", padding: "0 450px", position: "relative", display: "flex" }}>
       <Box sx={{ display: "flex", paddingTop: "50px", position: "absolute", left: "25px", top: "-40px" }}>
@@ -65,8 +80,14 @@ const Test = observer(({ mode }: TestProps): React.ReactElement => {
         <Typography sx={{ fontSize: "32px", color: "white" }}>/{questions.length}</Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: "50px" }}>
-        <Box sx={{ fontSize: "48px", fontWeight: 500, color: "white" }}>
-          {index + 1}. {questions[index]?.question}
+        <Box sx={{ fontSize: "48px", fontWeight: 500, color: "white", display: "flex" }}>
+          {index + 1}.{" "}
+          <EditableTypography
+            onChange={(): void => {}}
+            value={questions[index]?.question}
+            canChange={mode === "edit"}
+            sx={{ color: "white", fontSize: "48px", fontWeight: 500 }}
+          />
         </Box>
         <Box>
           {questions[index]?.answerOptions?.map(el => {
@@ -81,15 +102,20 @@ const Test = observer(({ mode }: TestProps): React.ReactElement => {
                   display: "flex",
                   cursor: "pointer",
                 }}
-                onClick={(): void => onAnswerSelect(questions[index]?.id, el.id)}
               >
                 <Checkbox
                   sx={{ path: { color: "white" } }}
                   checked={
                     el.id === selectedAnswers.find(answer => answer.question === questions[index].id)?.selectedAnswer
                   }
+                  onClick={(): void => onAnswerSelect(questions[index]?.id, el.id)}
                 />
-                <Box sx={{ marginLeft: "20px" }}>{el.answerText}</Box>
+                <EditableTypography
+                  onChange={(): void => {}}
+                  value={el.answerText}
+                  canChange={mode === "edit"}
+                  sx={{ color: "white", fontSize: "48px", fontWeight: 500 }}
+                />
               </Box>
             );
           })}
@@ -106,6 +132,11 @@ const Test = observer(({ mode }: TestProps): React.ReactElement => {
           {index > 0 && (
             <Button sx={buttonMixin} onClick={(): void => setIndex(index - 1)}>
               {"<"}
+            </Button>
+          )}
+          {selectedAnswers.find(el => el.question === questions[index].id) && mode === "edit" && (
+            <Button sx={buttonMixin} onClick={(): void => createNewQuestion()}>
+              {"+"}
             </Button>
           )}
           {selectedAnswers.find(el => el.question === questions[index].id) && (

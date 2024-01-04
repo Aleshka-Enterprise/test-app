@@ -44,7 +44,7 @@ const Registration = (): React.ReactElement => {
         UsersService.registration(values)
           .then(() => {
             ModalWindowsStore.errorMessage = " На вашу почту было выслано письмо для подтверждения.";
-            navigate("/autorization/");
+            navigate("/authorization/");
           })
           .catch((error: AxiosError<IError>) => {
             if (error.response?.data?.errorMessage) {
@@ -111,7 +111,7 @@ const Registration = (): React.ReactElement => {
           </Box>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: "30px" }}>
-          <Typography sx={linkMixin} onClick={(): void => navigate("/autorization/")}>
+          <Typography sx={linkMixin} onClick={(): void => navigate("/authorization/")}>
             Уже есть аккаунт?
           </Typography>
           <Button

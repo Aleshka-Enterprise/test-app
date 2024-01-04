@@ -1,7 +1,8 @@
 from django.test import TestCase
 
-from .models import Category, Test
 from user.models import User
+
+from .models import Category, Test
 
 
 class CatalogModelTests(TestCase):
