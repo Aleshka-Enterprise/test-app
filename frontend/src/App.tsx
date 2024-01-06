@@ -6,7 +6,6 @@ import Home from "./views/tests-list/TestsList";
 import TestPreview from "./views/test-preview/TestPreview";
 import { observer } from "mobx-react";
 import UsersStore from "./store/UsersStore";
-import Test from "./views/test/Test";
 import TestResult from "./views/test-result/TestResult";
 import Registration from "./views/registration/Registration";
 import Profile from "./views/profile/Profile";
@@ -14,6 +13,8 @@ import ErrorModal from "./components/error-modal/ErrorModal";
 import TestsStore from "./store/TestsStore";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import SuccessBox from "./components/success-box/SuccessBox";
+import TestEdit from "./views/test/TestEdit";
+import TestPassing from "./views/test/TestPassing";
 
 const App = observer((): React.ReactElement => {
   useEffect(() => {
@@ -39,7 +40,7 @@ const App = observer((): React.ReactElement => {
           />
           <Route
             path='test'
-            element={<ProtectedRoute element={<Test />} params={[TestsStore.selectedTest, UsersStore.user]} />}
+            element={<ProtectedRoute element={<TestPassing />} params={[TestsStore.selectedTest, UsersStore.user]} />}
           />
           <Route path='profile' element={<ProtectedRoute element={<Profile />} params={[UsersStore.user]} />} />
           <Route
@@ -55,7 +56,7 @@ const App = observer((): React.ReactElement => {
             path='edit-test'
             element={
               <ProtectedRoute
-                element={<Test mode={"edit"} />}
+                element={<TestEdit />}
                 params={[UsersStore.user, TestsStore.selectedTest?.author.id === UsersStore.user?.id]}
               />
             }
