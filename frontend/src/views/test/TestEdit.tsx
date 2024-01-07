@@ -1,18 +1,44 @@
 import React from "react";
 import TestBase from "./TestBase";
-// eslint-disable-next-line no-unused-vars
 import { observer } from "mobx-react";
 import { buttonMixin } from "../../utils/styles";
 import { Button } from "@mui/material";
 import TestsStore from "../../store/TestsStore";
 import TestsService from "../../services/tests/tests.service";
+import _ from "lodash";
+import withRouter from "../../utils/withRouter";
+import ModalWindowsStore from "../../store/ModalWindowsStore";
+import { AxiosError } from "axios";
+import { IError } from "../../models/common";
 
-@observer
 class TestEdit extends TestBase {
   mode = "edit";
 
   endTest(): void {
+    ModalWindowsStore.successMessage = "Тест успешно сохранён!";
     this.props.navigate?.("/");
+  }
+
+  componentDidUpdate(): void {
+    const { questions, index } = this.state;
+    const question = questions[index];
+    if (
+      !_.isEqual(questions[index], TestsStore.selectedTest?.questions?.[index]) &&
+      TestsStore.selectedTest?.id &&
+      question
+    ) {
+      TestsService.updateQuestion(
+        TestsStore.selectedTest?.id,
+        question.question,
+        question.answerOptions.map(option => option.answerText),
+        "",
+        question.id
+      ).catch((error: AxiosError<IError>) => {
+        if (error.response?.data?.errorMessage) {
+          ModalWindowsStore.errorMessage = error.response.data.errorMessage;
+        }
+      });
+    }
   }
 
   nextStep(): void {
@@ -29,7 +55,10 @@ class TestEdit extends TestBase {
         "Ответ 1"
       ).then(res => {
         TestsStore.updateQuestions(res);
-        this.setState({ index: TestsStore.selectedTest?.questions?.length || this.state.index });
+        this.setState({
+          questions: [...this.state.questions, res],
+          index: (TestsStore.selectedTest?.questions?.length || 1) - 1 || this.state.index,
+        });
       });
     }
   }
@@ -40,16 +69,14 @@ class TestEdit extends TestBase {
     return (
       <>
         {index > 0 && (
-          <Button sx={buttonMixin} onClick={(): void => this.setState({ index: index - 1 })}>
+          <Button sx={buttonMixin} onClick={(): void => this.setState({ index: index - 1 })} disabled={index <= 0}>
             {"<"}
           </Button>
         )}
-        {selectedAnswers.find(el => el.question === questions[index].id) && (
-          <Button sx={buttonMixin} onClick={(): void => this.createNewQuestion()}>
-            {"+"}
-          </Button>
-        )}
-        {selectedAnswers.find(el => el.question === questions[index].id) && (
+        <Button sx={buttonMixin} onClick={(): void => this.createNewQuestion()}>
+          {"+"}
+        </Button>
+        {selectedAnswers.find(el => el.question === questions[index]?.id) && (
           <Button sx={buttonMixin} onClick={(): void => this.nextStep()}>
             {">"}
           </Button>
@@ -59,4 +86,4 @@ class TestEdit extends TestBase {
   }
 }
 
-export default TestEdit;
+export default observer(withRouter(TestEdit));

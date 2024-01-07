@@ -124,7 +124,27 @@ class TestsService extends CommonService {
    */
   createQuestion(testId: number, question: string, options: string[], rightAnswer: string): Promise<IQuestion> {
     return axios
-      .post<IQuestion>(`${this.url}/create_new_question/${testId}/`, { question, options, right_answer: rightAnswer })
+      .post<IQuestion>(`${this.url}/question/${testId}/`, { question, options, right_answer: rightAnswer })
+      .then(
+        response => response.data,
+        reason => Promise.reject(reason)
+      );
+  }
+
+  updateQuestion(
+    testId: number,
+    question: string,
+    options: string[],
+    rightAnswer: string,
+    id: number
+  ): Promise<IQuestion> {
+    return axios
+      .put<IQuestion>(`${this.url}/question/${testId}/`, {
+        question,
+        options,
+        rightAnswer,
+        id,
+      })
       .then(
         response => response.data,
         reason => Promise.reject(reason)

@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -87,36 +86,50 @@ class TestResultAPIView(APIView):
         return Response({'message': 'Ресурс успешно удален'})
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_new_question(request, test_id):
-    """ Создаёт новый вопрос в тесте """
-    question_text = request.data.get('question')
-    options = request.data.get('options')
-    right_answer_text = request.data.get('right_answer')
+class QuestionAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = QuestionSerializer
 
-    if right_answer_text not in options:
-        return Response({'error': 'Правельного ответа нет среди вариантов ответа'}, status=status.HTTP_404_NOT_FOUND)
+    def post(self, request, *args, **kwargs):
+        """ Создаёт новый вопрос в тесте """
+        question_text = request.data.get('question')
+        options = request.data.get('options')
+        right_answer_text = request.data.get('right_answer')
 
-    test = get_object_or_404(Test, id=test_id)
+        if right_answer_text not in options:
+            return Response({'error': 'Правельного ответа нет среди вариантов ответа'},
+                            status=status.HTTP_404_NOT_FOUND)
 
-    question = Question.objects.create(test=test, question=question_text)
+        test = get_object_or_404(Test, id=kwargs.get("test_id"))
 
-    answer_objects = []
-    new_options = []
+        question = Question.objects.create(test=test, question=question_text)
 
-    for option_text in options:
-        option, created = Answer.objects.get_or_create(answer_text=option_text)
-        answer_objects.append(option)
-        if created:
-            new_options.append(option)
+        answer_objects = []
+        new_options = []
 
-    Answer.objects.bulk_create(new_options)
+        for option_text in options:
+            option, created = Answer.objects.get_or_create(answer_text=option_text)
+            answer_objects.append(option)
+            if created:
+                new_options.append(option)
 
-    right_answer, created = Answer.objects.get_or_create(answer_text=right_answer_text)
-    question.right_answer = right_answer
+        Answer.objects.bulk_create(new_options)
 
-    question.answer_options.set(answer_objects)
+        right_answer, created = Answer.objects.get_or_create(answer_text=right_answer_text)
+        question.right_answer = right_answer
 
-    serializer = QuestionSerializer(question)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+        question.answer_options.set(answer_objects)
+
+        serializer = QuestionSerializer(question)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        question_text = request.data.get('question')
+        question_id = request.data.get('id')
+
+        question = Question.objects.get(id=question_id)
+        question.question = question_text
+        question.save()
+
+        serializer = QuestionSerializer(question)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

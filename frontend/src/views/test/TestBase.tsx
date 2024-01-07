@@ -11,7 +11,7 @@ interface TestBaseProps {
   navigate?: (value: string) => void;
 }
 
-interface TestBaseState {
+export interface TestBaseState {
   index: number;
   questions: IQuestion[];
   selectedAnswers: Omit<IUserAnswer, "id">[];
@@ -36,9 +36,10 @@ abstract class TestBase extends React.Component<TestBaseProps, TestBaseState> {
     TestsStore.selectedTest?.id &&
       TestsService.getTest(TestsStore.selectedTest?.id).then(test => {
         this.setState({ questions: test.questions || [] });
+        TestsStore.selectedTest = { ...TestsStore.selectedTest!, questions: test.questions };
         TestsService.getUserAnswersList(TestsStore.selectedTest?.id).then(res => {
           const answersQuestionsIds = res.map(userAnswer => userAnswer.question);
-          const index = (test.questions || []).findIndex(question => !answersQuestionsIds.includes(question.id));
+          const index = (test.questions || []).findIndex(question => !answersQuestionsIds.includes(question?.id));
           this.setState({ index: Math.max(index, 0), selectedAnswers: res });
         });
       });
@@ -64,6 +65,12 @@ abstract class TestBase extends React.Component<TestBaseProps, TestBaseState> {
 
   abstract renderButtons(): React.ReactElement;
 
+  updateQuestion(value: IQuestion): void {
+    const questions = this.state.questions;
+    questions[this.state.index] = value;
+    this.setState({ questions });
+  }
+
   render(): React.ReactNode {
     const { index, questions, selectedAnswers } = this.state;
     return (
@@ -76,7 +83,7 @@ abstract class TestBase extends React.Component<TestBaseProps, TestBaseState> {
           <Box sx={{ fontSize: "48px", fontWeight: 500, color: "white", display: "flex" }}>
             {index + 1}.{" "}
             <EditableTypography
-              onChange={(): void => {}}
+              onChange={(value): void => this.updateQuestion({ ...questions[index], question: value })}
               value={questions[index]?.question}
               canChange={this.mode === "edit"}
               sx={{ color: "white", fontSize: "48px", fontWeight: 500 }}
@@ -86,7 +93,7 @@ abstract class TestBase extends React.Component<TestBaseProps, TestBaseState> {
             {questions[index]?.answerOptions?.map(el => {
               return (
                 <Box
-                  key={el.id}
+                  key={el?.id}
                   sx={{
                     color: "white",
                     marginTop: "30px",
@@ -99,12 +106,13 @@ abstract class TestBase extends React.Component<TestBaseProps, TestBaseState> {
                   <Checkbox
                     sx={{ path: { color: "white" } }}
                     checked={
-                      el.id === selectedAnswers.find(answer => answer.question === questions[index].id)?.selectedAnswer
+                      el?.id ===
+                      selectedAnswers.find(answer => answer.question === questions[index]?.id)?.selectedAnswer
                     }
-                    onClick={(): void => this.onAnswerSelect(questions[index]?.id, el.id)}
+                    onClick={(): void => this.onAnswerSelect(questions[index]?.id, el?.id)}
                   />
                   <EditableTypography
-                    onChange={(): void => {}}
+                    onChange={(value): void => {}}
                     value={el.answerText}
                     canChange={this.mode === "edit"}
                     sx={{ color: "white", fontSize: "48px", fontWeight: 500 }}
