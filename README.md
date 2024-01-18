@@ -12,7 +12,13 @@ npm --legacy-peer-deps install
 npm start
 ```
 ## Backend
-### Установка
+### Установка через Docker
+```
+docker build --tag django_tests:latest .
+docker run -p 8000:8000 django_books
+```
+
+### Ручная установка
 ```
 pip install -r requirements.txt
 ```
