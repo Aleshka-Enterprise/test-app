@@ -15,7 +15,7 @@ npm start
 ### Установка через Docker
 ```
 docker build --tag django_tests:latest .
-docker run -p 8000:8000 django_books
+docker run -p 8000:8000 django_tests
 ```
 
 ### Ручная установка
