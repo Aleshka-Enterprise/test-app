@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 interface GuardProps {
   element: React.ReactElement;
-  params: any[];
+  params: unknown[];
 }
 const ProtectedRoute = ({ element, params }: GuardProps): React.ReactElement => {
   const navigate = useNavigate();

@@ -6,6 +6,10 @@
 - node 16.16.0
 
 # Запуск
+## Всё приложение через Docker
+```
+docker-compose up
+```
 ## Frontend
 ```
 npm --legacy-peer-deps install
